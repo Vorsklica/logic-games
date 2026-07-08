@@ -17,12 +17,19 @@ const tg = window.Telegram.WebApp;
 
 tg.ready();
 
-console.log("Telegram WebApp:", tg);
+const info = document.createElement("pre");
 
-document.body.insertAdjacentHTML(
-    "beforeend",
-    "<p><b>Telegram WebApp API підключено.</b></p>"
-);
+info.style.background = "#f4f4f4";
+info.style.padding = "10px";
+info.style.border = "1px solid #ccc";
+
+info.textContent =
+"platform : " + tg.platform + "\n" +
+"version  : " + tg.version + "\n" +
+"color    : " + tg.colorScheme + "\n" +
+"initData : " + (tg.initData ? "Є" : "Немає");
+
+document.body.appendChild(info);
 </script>
 </body>
 </html>
