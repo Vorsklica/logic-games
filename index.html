@@ -11,5 +11,18 @@
     <p>Перша гра вже в розробці</p>
     </br>
     <p>Майстерня головоломок починає свою роботу.</p>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+
+console.log("Telegram WebApp:", tg);
+
+document.body.insertAdjacentHTML(
+    "beforeend",
+    "<p><b>Telegram WebApp API підключено.</b></p>"
+);
+</script>
 </body>
 </html>
