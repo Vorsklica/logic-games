@@ -10,23 +10,6 @@ const bot = new TelegramBot(token, {
   polling: true,
 });
 
-bot.on("message", (msg) => {
-  console.log("========================");
-  console.log("ID чату :", msg.chat.id);
-  console.log("Назва   :", msg.chat.title);
-  console.log("Тип     :", msg.chat.type);
-  console.log("Текст   :", msg.text);
-});
-
-bot.on("channel_post", (msg) => {
-  console.log("========================");
-  console.log("КАНАЛ");
-  console.log("ID чату :", msg.chat.id);
-  console.log("Назва   :", msg.chat.title);
-  console.log("Тип     :", msg.chat.type);
-  console.log("Текст   :", msg.text);
-});
-
 bot
   .sendMessage(chatId, "🧩 Нова гра Logic Games!", {
     reply_markup: {
