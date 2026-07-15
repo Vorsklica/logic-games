@@ -1,0 +1,280 @@
+:root {
+  --page-color: #eceff3;
+  --game-color: #888888;
+  --cell-color: #dddddd;
+  --surface-color: #aaaaaa;
+  --border-color: #d9dde3;
+
+  --text-color: #222222;
+
+  --primary-color: #2f80ed;
+
+  --success-color: #2e7d32;
+  --error-color: #c62828;
+
+  --correct-bg: #9be79b;
+  --correct-border: #1b8e1b;
+
+  --wrong-bg: #ffb0b0;
+  --wrong-border: #c62828;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+
+  background-color: var(--page-color);
+  color: var(--text-color);
+
+  display: flex;
+  justify-content: center;
+
+  padding: 40px 20px;
+}
+
+.game {
+  width: 100%;
+  max-width: 700px;
+
+  min-height: 700px;
+
+  background-color: var(--surface-color);
+
+  padding: 30px;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 12px;
+}
+
+#game-title {
+  text-align: center;
+
+  margin-bottom: 20px;
+}
+
+#progress {
+  text-align: center;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  margin-bottom: 30px;
+}
+
+.sequence {
+  display: flex;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+
+  max-width: 200px;
+
+  margin: 0 auto 30px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 80px;
+  height: 80px;
+
+  padding: 8px;
+
+  background-color: var(--cell-color);
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.answer-cell {
+  cursor: pointer;
+}
+
+.disabled {
+  pointer-events: none;
+
+  opacity: 0.6;
+}
+
+.correct {
+  background-color: var(--correct-bg);
+  border-color: var(--correct-border);
+}
+
+.wrong {
+  background-color: var(--wrong-bg);
+  border-color: var(--wrong-border);
+}
+
+/* ==============================
+   Кнопки гри
+   ============================== */
+
+.game-button {
+  min-width: 170px;
+
+  height: 48px;
+
+  padding: 0 24px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background-color: var(--primary-color);
+
+  color: white;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    transform 0.1s,
+    box-shadow 0.2s;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.game-button:hover {
+  background-color: #1f6fd5;
+}
+
+.game-button:active {
+  transform: translateY(1px);
+}
+
+.game-button:disabled {
+  opacity: 0.5;
+
+  cursor: default;
+
+  box-shadow: none;
+}
+
+/* ==============================
+   Повідомлення
+   ============================== */
+
+.message {
+  min-height: 32px;
+
+  margin: 25px 0;
+
+  text-align: center;
+
+  font-size: 22px;
+
+  font-weight: 600;
+}
+
+.message.success {
+  color: var(--success-color);
+}
+
+.message.error {
+  color: var(--error-color);
+}
+
+/* ==============================
+   Панель кнопок
+   ============================== */
+
+.button-panel {
+  margin-top: 25px;
+
+  text-align: center;
+}
+
+/* ==============================
+   Інструкція
+   ============================== */
+
+.instruction {
+  margin-bottom: 20px;
+
+  text-align: center;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: var(--text-color);
+}
+
+/* ==============================
+   Екран результату
+   ============================== */
+
+#result-screen {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 420px;
+}
+
+.result-title {
+  font-size: 28px;
+
+  font-weight: 600;
+
+  margin-bottom: 30px;
+}
+
+.result-percent {
+  font-size: 64px;
+
+  font-weight: bold;
+
+  color: var(--primary-color);
+
+  margin-bottom: 20px;
+}
+
+.result-score {
+  font-size: 24px;
+
+  margin-bottom: 30px;
+}
+
+.result-emoji {
+  font-size: 72px;
+}
+.screen {
+  min-height: 420px;
+}
+
+.hidden {
+  display: none !important;
+}

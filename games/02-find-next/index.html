@@ -11,28 +11,43 @@
 
   <body>
     <main class="game">
-      <h1 id="game-title">Find Next</h1>
+      <div id="game-screen" class="screen">
+        <h1 id="game-title"></h1>
 
-      <div id="progress">Завдання 1 з 1</div>
+        <div id="progress"></div>
 
-      <div id="sequence" class="sequence">
-        <!-- Послідовність -->
+        <div id="sequence" class="sequence">
+          <!-- Послідовність -->
+        </div>
+
+        <div id="instruction" class="instruction"></div>
+
+        <div id="answers" class="answers">
+          <!-- Варіанти відповідей -->
+        </div>
+
+        <div id="result-panel">
+          <div id="message"></div>
+
+          <div class="button-panel">
+            <button id="next-button" class="game-button" hidden>Далі</button>
+          </div>
+        </div>
       </div>
 
-      <div id="answers" class="answers">
-        <!-- Варіанти відповідей -->
-      </div>
+      <div id="result-screen" class="screen" hidden>
+        <div id="result-title" class="result-title">Результат</div>
 
-      <div id="message" class="message">
-        <!-- Повідомлення -->
-      </div>
+        <div id="result-percent" class="result-percent"></div>
 
-      <button id="next-button" hidden>Далі</button>
+        <div id="result-score" class="result-score"></div>
+
+        <div id="result-emoji" class="result-emoji"></div>
+      </div>
     </main>
 
     <script src="config.js"></script>
-    <script src="content/set-001/info.js"></script>
-    <script src="content/set-001/tasks.js"></script>
+    <script src="content/data-005.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
