@@ -1,5 +1,8 @@
-import { loadPosts } from "./lib/post.js";
+import { loadPosts, isReady } from "./lib/post.js";
 
 const posts = loadPosts();
 
-console.log(JSON.stringify(posts, null, 2));
+for (const post of posts) {
+  console.log(post.data.text);
+  console.log(isReady(post.data));
+}

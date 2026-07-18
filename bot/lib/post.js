@@ -34,8 +34,45 @@ export function loadPosts() {
 }
 
 /**
- * Зберігає JSON назад у файл.
+ * Зберігає пост у відповідний JSON-файл.
  */
-export function savePost(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
+export function savePost(post) {
+  fs.writeFileSync(post.file, JSON.stringify(post.data, null, 2), "utf8");
+}
+
+/**
+ * Перевіряє, чи готовий пост до публікації.
+ */
+export function isReady(post) {
+  if (post.data.status !== "pending") {
+    return false;
+  }
+
+  if (!post.data.publishAt) {
+    return true;
+  }
+
+  const now = new Date();
+
+  return now >= new Date(post.data.publishAt);
+}
+/**
+ * Позначає пост як успішно опублікований.
+ */
+export function markPublished(post, messageId) {
+  post.data.status = "published";
+  post.data.publishedAt = new Date().toISOString();
+  post.data.messageId = messageId;
+
+  delete post.data.error;
+}
+/**
+ * Позначає пост як помилковий.
+ */
+export function markError(post, error) {
+  post.data.status = "error";
+  post.data.error = error.message ?? String(error);
+
+  delete post.data.messageId;
+  delete post.data.publishedAt;
 }
