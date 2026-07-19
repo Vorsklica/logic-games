@@ -120,3 +120,7 @@ themes/
 Правило 2. Номер набору даних передається в полі game.set.
 
 Правило 3. Якщо поле game.set відсутнє, гра не використовує набори даних.
+
+URL's які викликають ігри:
+https://vorsklica.github.io/logic-games/games/Two-colors/ \*\* без параметрів
+https://vorsklica.github.io/logic-games/games/02-find-next/?set=1

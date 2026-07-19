@@ -16,7 +16,7 @@
 //
 // Автор: Граймонт
 // =====================================================
-const info = {
+export const info = {
   id: "set-001",
   title: "* Прості числові послідовності *",
   instruction: "Варіанти для завершення ряду",
@@ -29,7 +29,7 @@ const info = {
   contentType: "number",
 };
 
-const tasks = [
+export const tasks = [
   {
     sequence: [2, 4, 6, "?"],
     options: [8, 9, 10, 12],

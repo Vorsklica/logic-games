@@ -17,13 +17,13 @@
 // Автор: Граймонт
 // =====================================================
 
-const info = {
+export const info = {
   title: "Незвичайні числові послідовності",
 
   instruction: "Варіанти для завершення ряду",
 };
 
-const tasks = [
+export const tasks = [
   // +2, +3, +4
   {
     sequence: [2, 4, 7, 11, null],
@@ -77,7 +77,7 @@ const tasks = [
   {
     sequence: [3, 5, 9, 17, null],
     options: [25, 31, 33, 35],
-    correct: 2
+    correct: 2,
   },
 
   // ×3

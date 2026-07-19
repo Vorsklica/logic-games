@@ -19,7 +19,7 @@ function buildGameUrl(post) {
   if (set !== undefined) {
     url += `?set=${set}`;
   }
-
+  console.log(url);
   return url;
 }
 
@@ -53,7 +53,11 @@ export async function publishPost(post) {
   if (post.data.image) {
     const imagePath = path.join(path.dirname(post.file), post.data.image);
 
-    console.log(imagePath);
+    if (!fs.existsSync(imagePath)) {
+      throw new Error(
+        `Image "${post.data.image}" not found.\nPath: ${imagePath}`,
+      );
+    }
 
     message = await bot.sendPhoto(CHAT_ID, fs.createReadStream(imagePath), {
       caption: post.data.text,
@@ -62,6 +66,5 @@ export async function publishPost(post) {
   } else {
     message = await bot.sendMessage(CHAT_ID, post.data.text, options);
   }
-
   return message.message_id;
 }

@@ -1,3 +1,8 @@
+import { getSet } from "../common/url.js";
+const currentSet = getSet();
+const fileName = `./content/data-${String(currentSet).padStart(3, "0")}.js`;
+const { info, tasks } = await import(fileName);
+
 // ==============================
 // Find Next
 // Головний сценарій гри
