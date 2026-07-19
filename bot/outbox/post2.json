@@ -1,12 +1,11 @@
 {
   "publishAt": "2026-07-19T09:00:00+03:00",
-
   "image": "preview.jpg",
-
   "text": "🧩 Нова гра.\n\nНатисніть кнопку нижче та перевірте свою уважність.",
-
   "game": {
     "id": "Two-colors"
   },
-  "status": "pending"
+  "status": "published",
+  "messageId": 28,
+  "publishedAt": "2026-07-19T06:35:00.087Z"
 }

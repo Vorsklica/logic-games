@@ -1,13 +1,12 @@
 {
   "publishAt": "2026-07-18T09:00:00+03:00",
-
   "image": "preview.jpg",
-
   "text": "🧩 Знайдіть правильне продовження послідовності.\n\nНатисніть кнопку нижче та перевірте свою уважність.",
-
   "game": {
     "id": "02-find-next",
     "set": 1
   },
-  "status": "pending"
+  "status": "published",
+  "messageId": 27,
+  "publishedAt": "2026-07-19T06:34:59.926Z"
 }

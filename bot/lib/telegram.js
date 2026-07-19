@@ -3,7 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import TelegramBot from "node-telegram-bot-api";
 
-dotenv.config();
+const env = dotenv.config();
 
 const bot = new TelegramBot(process.env.BOT_TOKEN);
 const CHAT_ID = process.env.CHAT_ID;
