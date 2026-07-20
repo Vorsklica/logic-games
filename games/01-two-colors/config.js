@@ -15,7 +15,7 @@ const GAME = {
 
     boardSize: 4,
 
-    randomMoves: 20,
+    randomMoves: 8,
 
     newGameButton: "Нова гра",
 
