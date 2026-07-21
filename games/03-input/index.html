@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Input</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game">
+      <!-- Заголовок -->
+
+      <h1 id="game-title"></h1>
+
+      <!-- Умова -->
+
+      <section id="task-screen">
+        <p id="question" class="question"></p>
+
+        <div class="image-container">
+          <img id="task-image" alt="Ілюстрація до задачі" />
+        </div>
+
+        <div class="input-panel">
+          <input
+            id="answer-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="100"
+          />
+        </div>
+
+        <div class="button-panel">
+          <button id="check-button" class="game-button">Перевірити</button>
+        </div>
+
+        <div id="message" class="message"></div>
+      </section>
+
+      <!-- Футер -->
+
+      <footer class="game-footer">
+        <span class="footer-logo">🧩</span>
+        <span class="footer-text"> Powered by Graimont </span>
+      </footer>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

@@ -19,3 +19,9 @@ export function getSet(defaultSet = 1) {
 
   return value;
 }
+
+export function getDataFolder(defaultSet = 1) {
+  const set = getSet(defaultSet);
+
+  return `data-${String(set).padStart(3, "0")}`;
+}
