@@ -109,13 +109,25 @@ function normalizeAnswer(text) {
 }
 
 function showSuccess() {
+  message.classList.remove("game__message--wrong");
+  message.classList.add("game__message--correct");
+
   message.textContent = "Правильно! ✅";
 }
 
 function showError() {
+  message.classList.remove("game__message--correct");
+  message.classList.add("game__message--wrong");
+
   message.textContent = "Неправильно. ❌";
 }
 
-answerInput.addEventListener("input", () => {
+function clearMessage() {
+  message.textContent = "";
+
+  message.classList.remove("game__message--correct", "game__message--wrong");
+}
+
+answerInput.addEventListener("input", (clearMessage) => {
   message.textContent = "";
 });

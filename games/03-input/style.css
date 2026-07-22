@@ -13,7 +13,7 @@
 
   --game-max-width: 700px;
   --game-min-height: 700px;
-  --screen-min-height: 420px;
+  --game-radius: 12px;
 
   /* ---------- Відступи ---------- */
 
@@ -36,47 +36,39 @@
   --button-radius: 8px;
   --button-font-size: 18px;
 
-  /* ---------- Поле введення ---------- */
-
-  --input-height: 48px;
-  --input-font-size: 18px;
-  --input-radius: 8px;
-
-  /*----------- Зображення -----------*/
-
-  --image-radius: 8px;
-  --image-max-height: 420px;
-
   /* ---------- Типографіка ---------- */
 
   --title-size: 2.5rem;
-  --instruction-size: 18px;
   --message-size: 22px;
 
   /* ---------- Кольори ---------- */
 
   --page-color: #eceff3;
-  --surface-color: #aaaaaa;
-  --cell-color: #dddddd;
-
+  --surface-color: #ffffff;
   --border-color: #d9dde3;
-
   --text-color: #222222;
-
-  --primary-color: #2f80ed;
 
   --success-color: #2e7d32;
   --error-color: #c62828;
 
-  --correct-bg: #9be79b;
-  --correct-border: #1b8e1b;
+  --primary-color: #2f80ed;
+  --primary-hover-color: #2367c8;
 
-  --wrong-bg: #ffb0b0;
-  --wrong-border: #c62828;
+  /* ---------- Input ---------- */
+
+  --question-size: 18px;
+
+  --image-radius: 8px;
+
+  --input-height: 48px;
+  --input-radius: 8px;
+  --input-font-size: 18px;
+
+  --message-min-height: 32px;
 }
 
 /* =========================================================
-   Базові стилі
+   Скидання стилів
    ========================================================= */
 
 * {
@@ -85,15 +77,24 @@
   box-sizing: border-box;
 }
 
+/* =========================================================
+   Сторінка
+   ========================================================= */
+
 body {
   min-height: 100vh;
-  align-items: center;
-  font-family: Arial, Helvetica, sans-serif;
+
+  padding: var(--body-padding-y) var(--body-padding-x);
+
   background: var(--page-color);
+
   color: var(--text-color);
+
+  font-family: Arial, Helvetica, sans-serif;
+
   display: flex;
   justify-content: center;
-  padding: var(--body-padding-y) var(--body-padding-x);
+  align-items: flex-start;
 }
 
 /* =========================================================
@@ -101,331 +102,171 @@ body {
    ========================================================= */
 
 .game {
-  width: 100%;
+  width: min(100%, var(--game-max-width));
   max-width: var(--game-max-width);
-
   min-height: var(--game-min-height);
-
-  background: var(--surface-color);
 
   padding: var(--game-padding);
 
+  background: var(--surface-color);
+
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--game-radius);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
 }
 
-/* =========================================================
-   Заголовок
-   ========================================================= */
+.game__task {
+  display: flex;
+  flex-direction: column;
 
-#game-title {
-  text-align: center;
-
-  font-size: var(--title-size);
-
-  margin-bottom: var(--gap-lg);
+  gap: var(--gap-xl);
+  width: 100%;
 }
 
+.game__question {
+  padding: 14px 18px;
 
+  background: #d1dceb;
 
-/* =========================================================
-   Інструкція
-   ========================================================= */
+  border: 1px solid var(--border-color);
 
-.instruction {
-  text-align: center;
+  border-radius: 8px;
 
-  font-size: var(--instruction-size);
+  font-size: var(--question-size);
+
   font-weight: 600;
 
-  margin-bottom: var(--gap-lg);
+  text-align: left;
+
+  line-height: 1.5;
 }
 
 /* =========================================================
-   Послідовність
+   Зображення
    ========================================================= */
 
-.sequence {
-  display: flex;
-  justify-content: center;
-
-  gap: var(--gap-sm);
-
-  margin-bottom: var(--gap-xl);
+.game__image-container {
+  width: 100%;
 }
 
-/* =========================================================
-   Варіанти відповідей
-   ========================================================= */
+.game__image {
+  display: block;
 
-.answers {
-  display: grid;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: var(--gap-md);
-
-  max-width: calc(var(--cell-size) * 2 + var(--gap-md));
-
-  margin: 0 auto var(--gap-xxl);
+  border-radius: var(--image-radius);
 }
+.game__input {
+  width: 100%;
+  height: var(--input-height);
 
-/* =========================================================
-   Клітинки
-   ========================================================= */
+  padding: 0 14px;
 
-.cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: var(--input-font-size);
 
-  width: var(--cell-size);
-  aspect-ratio: 1;
+  background-color: #ffffff;
 
-  padding: var(--gap-xs);
+  border: 2px solid #b8c2cc;
+  border-radius: var(--input-radius);
 
-  background: var(--cell-color);
-
-  border: 1px solid var(--border-color);
-  border-radius: var(--cell-radius);
-
-  font-size: var(--cell-font-size);
-  font-weight: bold;
-}
-
-.answer-cell {
-  cursor: pointer;
+  outline: none;
 
   transition:
-    transform 0.15s,
-    background-color 0.2s,
-    border-color 0.2s;
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-.answer-cell:hover {
-  transform: scale(1.04);
-}
-
-.disabled {
-  pointer-events: none;
-
-  opacity: 0.6;
-}
-
-.correct {
-  background: var(--correct-bg);
-  border-color: var(--correct-border);
-}
-
-.wrong {
-  background: var(--wrong-bg);
-  border-color: var(--wrong-border);
+.game__input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.15);
 }
 
 /* =========================================================
-   Кнопки гри
+   Кнопка
    ========================================================= */
-.game-button {
-  min-width: var(--button-width);
-  height: var(--button-height);
 
-  padding: 0 var(--gap-xl);
+.game__button-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.game__button {
+  width: var(--button-width);
+  height: var(--button-height);
 
   border: none;
   border-radius: var(--button-radius);
 
-  background: var(--primary-color);
+  background-color: var(--primary-color);
+  color: #ffffff;
 
-  color: white;
-
-  font-family: inherit;
   font-size: var(--button-font-size);
   font-weight: 600;
 
   cursor: pointer;
 
   transition:
-    background-color 0.2s,
-    transform 0.1s,
-    box-shadow 0.2s;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
-.game-button:hover {
-  background: #1f6fd5;
+.game__button:hover {
+  background-color: var(--primary-hover-color);
 }
 
-.game-button:active {
-  transform: translateY(1px);
+.game__button:active {
+  transform: scale(0.98);
 }
 
-.game-button:disabled {
-  opacity: 0.5;
-
+.game__button:disabled {
+  background-color: #b8c2cc;
   cursor: default;
-
-  box-shadow: none;
 }
 
 /* =========================================================
    Повідомлення
    ========================================================= */
 
-.message {
-  min-height: 32px;
+.game__message {
+  min-height: var(--message-min-height);
 
-  margin: var(--gap-xl) 0;
-
-  text-align: center;
-
-  font-size: var(--message-size);
-  font-weight: 600;
-}
-
-.message.success {
-  color: var(--success-color);
-}
-
-.message.error {
-  color: var(--error-color);
-}
-
-/* =========================================================
-   Панель кнопок
-   ========================================================= */
-
-.button-panel {
-  margin-top: var(--gap-xl);
-
-  text-align: center;
-}
-
-/* =========================================================
-   Екран результатів
-   ========================================================= */
-
-.screen {
-  min-height: var(--screen-min-height);
-}
-
-#result-screen {
   display: flex;
-
-  flex-direction: column;
-
   justify-content: center;
   align-items: center;
 
-  min-height: var(--screen-min-height);
-}
-
-.result-title {
-  font-size: var(--result-title-size);
+  font-size: var(--message-size);
   font-weight: 600;
 
-  margin-bottom: var(--gap-xxl);
+  text-align: center;
 }
 
-.result-percent {
-  font-size: var(--result-percent-size);
-  font-weight: bold;
-
-  color: var(--primary-color);
-
-  margin-bottom: var(--gap-lg);
+.game__message--correct {
+  color: var(--success-color);
 }
 
-.result-score {
-  font-size: var(--result-score-size);
-
-  margin-bottom: var(--gap-xxl);
+.game__message--wrong {
+  color: var(--error-color);
 }
 
-.result-emoji {
-  font-size: var(--result-emoji-size);
+.game__footer {
+  margin-top: auto;
+  padding-top: var(--gap-xl);
 }
-
-/* =========================================================
-   Допоміжні класи
-   ========================================================= */
-
-.hidden {
-  display: none !important;
-}
-
-/* =========================================================
-   Мобільна версія
-   ========================================================= */
 
 @media (max-width: 768px) {
-  :root {
-    /* Контейнер */
-
-    --game-min-height: auto;
-    --screen-min-height: auto;
-
-    /* Відступи */
-
-    --body-padding-y: 12px;
-    --body-padding-x: 10px;
-
-    --game-padding: 16px;
-
-    --gap-sm: 8px;
-    --gap-md: 10px;
-    --gap-lg: 14px;
-    --gap-xl: 16px;
-    --gap-xxl: 20px;
-
-    /* Клітинки */
-
-    --cell-size: 60px;
-    --cell-font-size: 20px;
-
-    /* Кнопки */
-
-    --button-width: 150px;
-    --button-height: 42px;
-    --button-font-size: 16px;
-
-    /* Шрифти */
-
-    --title-size: 1.8rem;
-
-    --progress-size: 16px;
-    --instruction-size: 16px;
-
-    --message-size: 18px;
-
-    --result-title-size: 24px;
-    --result-score-size: 20px;
-    --result-percent-size: 48px;
-    --result-emoji-size: 56px;
+  body {
+    padding: 12px;
   }
 
   .game {
+    padding: 16px;
     min-height: auto;
-  }
-
-  .screen,
-  #result-screen {
-    min-height: auto;
-  }
-
-  .sequence {
-    flex-wrap: wrap;
-
-    gap: var(--gap-sm);
-  }
-
-  .answers {
-    max-width: calc(var(--cell-size) * 2 + var(--gap-md));
-  }
-
-  .game-button {
-    width: 100%;
-    max-width: 260px;
   }
 }
-

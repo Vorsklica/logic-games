@@ -12,39 +12,42 @@
     <main class="game">
       <!-- Заголовок -->
 
-      <h1 id="game-title"></h1>
+      <h1 id="game-title" class="game__title"></h1>
 
       <!-- Умова -->
 
-      <section id="task-screen">
-        <p id="question" class="question"></p>
+      <section class="game__task">
+        <p id="question" class="game__question"></p>
 
-        <div class="image-container">
-          <img id="task-image" alt="Ілюстрація до задачі" />
+        <div class="game__image-container">
+          <img id="task-image" class="game__image" alt="Ілюстрація до задачі" />
         </div>
 
-        <div class="input-panel">
+        <div class="game__input-panel">
           <input
             id="answer-input"
+            class="game__input"
             type="text"
+            placeholder="Введіть відповідь..."
             autocomplete="off"
             spellcheck="false"
             maxlength="100"
           />
         </div>
 
-        <div class="button-panel">
-          <button id="check-button" class="game-button">Перевірити</button>
+        <div class="game__button-panel">
+          <button id="check-button" class="game__button">Перевірити</button>
         </div>
 
-        <div id="message" class="message"></div>
+        <div id="message" class="game__message"></div>
       </section>
 
-      <!-- Футер -->
+      <!-- Нижній колонтитул -->
 
-      <footer class="game-footer">
-        <span class="footer-logo">🧩</span>
-        <span class="footer-text"> Powered by Graimont </span>
+      <footer class="game__footer">
+        <span class="game__footer-logo"> 🧩 </span>
+
+        <span class="game__footer-text"> Powered by Logic Games lab </span>
       </footer>
     </main>
 
