@@ -66,10 +66,6 @@ body {
 .game__board {
   display: grid;
 
-  /* ========= (!!! тимчасово для тестування !!!) ====== */
-  grid-template-columns: repeat(4, 1fr);
-  /* ===================================*/
-
   gap: 8px;
 
   width: 100%;
@@ -93,6 +89,8 @@ body {
 .game__tile {
   position: relative;
 
+  background-repeat: no-repeat;
+
   overflow: hidden;
 
   border-radius: 8px;
@@ -106,22 +104,6 @@ body {
     box-shadow 0.15s ease,
     opacity 0.5s ease;
 }
-
-/* =========================================
-   Тимчасовий код для тестування
-   Буде видалено після підключення script.js
-   ========================================= */
-
-.game__tile:nth-child(odd) {
-  background-color: #cccccc;
-}
-
-.game__tile:nth-child(even) {
-  background-color: #aaaaaa;
-}
-/* ===================================*/
-
-/* Доступна для переміщення плитка */
 
 .game__tile--active {
 }

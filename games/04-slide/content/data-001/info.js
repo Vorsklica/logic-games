@@ -1,5 +1,5 @@
 export default {
   id: "data-001",
-  title: "Пазл 4×4",
-  size: 4,
+  title: "Зберіть пазл",
+  size: 3,
 };
