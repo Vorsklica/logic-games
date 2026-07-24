@@ -1,0 +1,266 @@
+/* =========================================
+   CSS-змінні
+   ========================================= */
+
+:root {
+  --page-max-width: 600px;
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+
+  --border-radius: 12px;
+
+  --background-color: #f5f5f5;
+  --surface-color: #ffffff;
+  --border-color: #cccccc;
+  --text-color: #222222;
+}
+
+/* =========================================
+   Загальні стилі
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: var(--spacing-sm);
+
+  background: var(--background-color);
+  color: var(--text-color);
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.game {
+  width: 100%;
+  max-width: var(--page-max-width);
+
+  margin: 0 auto;
+}
+
+/* =========================================
+   Заголовок
+   ========================================= */
+
+.game__title {
+  margin: 0 0 var(--spacing-md);
+
+  text-align: center;
+}
+/* =========================================
+   Ігрове поле
+   ========================================= */
+
+/* Контейнер ігрового поля */
+
+.game__board-section {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Ігрове поле */
+
+.game__board {
+  display: grid;
+
+  /* ========= (!!! тимчасово для тестування !!!) ====== */
+  grid-template-columns: repeat(4, 1fr);
+  /* ===================================*/
+
+  gap: 8px;
+
+  width: 100%;
+  aspect-ratio: 1;
+
+  padding: 8px;
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+
+  background: var(--surface-color);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+/* =========================================
+   Плитка
+   ========================================= */
+
+.game__tile {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background-color: #ffffff;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.5s ease;
+}
+
+/* =========================================
+   Тимчасовий код для тестування
+   Буде видалено після підключення script.js
+   ========================================= */
+
+.game__tile:nth-child(odd) {
+  background-color: #cccccc;
+}
+
+.game__tile:nth-child(even) {
+  background-color: #aaaaaa;
+}
+/* ===================================*/
+
+/* Доступна для переміщення плитка */
+
+.game__tile--active {
+}
+
+/* Натискання на плитку */
+
+.game__tile--pressed {
+}
+
+/* Стан після завершення гри */
+
+.game__tile--completed {
+}
+
+/* Прихований номер */
+
+.game__tile-number--hidden {
+}
+
+.game__tile--completed {
+  box-shadow: none;
+}
+
+/* Прихований номер */
+.game__tile-number--hidden {
+  opacity: 0;
+}
+
+/* Номер плитки */
+.game__tile-number {
+  position: absolute;
+
+  top: 6px;
+  left: 6px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+
+  color: #000;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  user-select: none;
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.3s ease;
+}
+/* =========================================
+   Панель статистики
+   ========================================= */
+
+.game__status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: var(--spacing-md);
+
+  font-weight: 600;
+}
+
+.game__timer {
+}
+
+.game__moves {
+}
+
+/* =========================================
+   Інформаційний блок
+   ========================================= */
+
+.game__info {
+  min-height: 1.5rem;
+
+  margin-bottom: var(--spacing-md);
+}
+
+.game__message {
+  text-align: center;
+}
+
+/* =========================================
+   Кнопки
+   ========================================= */
+
+.game__controls {
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: var(--spacing-md);
+}
+
+.game__button {
+  padding: 0.75rem 1.5rem;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #4a90e2;
+  color: white;
+
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.game__button:hover {
+  background: #357abd;
+}
+/* =========================================
+   Нижній колонтитул
+   ========================================= */
+
+.game__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0.5rem;
+
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.game__footer-logo {
+}
+
+.game__footer-text {
+}

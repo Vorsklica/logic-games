@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Slide</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="game">
+      <!-- Заголовок -->
+
+      <h1 id="game-title" class="game__title">Пазл 4×4</h1>
+
+      <!-- Ігрове поле -->
+
+      <section class="game__board-section">
+        <div id="game-board" class="game__board">
+          <!--==============   Для тестування ================-->
+          <div class="game__tile">
+            <div class="game__tile-number">1</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">2</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">3</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">4</div>
+          </div>
+          <div class="game__tile">
+            <div class="game__tile-number">5</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">6</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">7</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">8</div>
+          </div>
+          <div class="game__tile">
+            <div class="game__tile-number">9</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">10</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">11</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">12</div>
+          </div>
+          <div class="game__tile">
+            <div class="game__tile-number">13</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">14</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number">15</div>
+          </div>
+
+          <div class="game__tile">
+            <div class="game__tile-number"></div>
+          </div>
+          <!--===================================================-->
+        </div>
+      </section>
+
+      <!-- Панель статистики -->
+
+      <section class="game__status">
+        <div id="timer" class="game__timer">00:00</div>
+
+        <div id="moves" class="game__moves">0 ходів</div>
+      </section>
+
+      <!-- Інформація -->
+
+      <section class="game__info">
+        <div id="game-message" class="game__message"></div>
+      </section>
+
+      <!-- Кнопки -->
+
+      <section class="game__controls">
+        <button id="restart-button" class="game__button">Зіграти ще раз</button>
+      </section>
+
+      <!-- Нижній колонтитул -->
+
+      <footer class="game__footer">
+        <span class="game__footer-logo">🧩</span>
+
+        <span class="game__footer-text"> Powered by Logic Games Lab </span>
+      </footer>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
