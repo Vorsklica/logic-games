@@ -35,6 +35,12 @@ let moves = 0;
 let startTime = null;
 let timerId = null;
 
+/* Для реалізації swipe на смартфоні */
+let pointerStartX = 0;
+let pointerStartY = 0;
+
+let pointerTile = null;
+
 /* =========================================
    Завантаження даних
    ========================================= */
@@ -350,6 +356,34 @@ function formatTime(totalSeconds) {
   return `${minutes} хв ${String(seconds).padStart(2, "0")} с`;
 }
 
+function onPointerDown(event) {
+  const tile = event.target.closest(".game__tile");
+
+  if (!tile) {
+    return;
+  }
+
+  pointerTile = tile;
+
+  pointerStartX = event.clientX;
+  pointerStartY = event.clientY;
+}
+
+function onPointerUp(event) {
+  if (!pointerTile) {
+    return;
+  }
+
+  const deltaX = event.clientX - pointerStartX;
+  const deltaY = event.clientY - pointerStartY;
+
+  const distance = Math.hypot(deltaX, deltaY);
+  /**Тестування */
+  messageElement.textContent = `Зсув: ${Math.round(distance)} px`;
+  /**========== */
+  pointerTile = null;
+}
+
 /* =========================================
    Ініціалізація
    ========================================= */
@@ -375,6 +409,8 @@ async function init() {
    ========================================= */
 
 gameBoardElement.addEventListener("click", onBoardClick);
+gameBoardElement.addEventListener("pointerdown", onPointerDown);
+gameBoardElement.addEventListener("pointerup", onPointerUp);
 restartButtonElement.addEventListener("click", restartGame);
 
 init();
