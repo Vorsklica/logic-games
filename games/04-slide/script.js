@@ -18,7 +18,7 @@ const gameTitleElement = document.getElementById("game-title");
 const gameBoardElement = document.getElementById("game-board");
 const timerElement = document.getElementById("timer");
 const movesElement = document.getElementById("moves");
-const messageElement = document.getElementById("message");
+const messageElement = document.getElementById("game-message");
 const restartButtonElement = document.getElementById("restart-button");
 
 /* =========================================
@@ -29,10 +29,11 @@ let info = null;
 let imagePath = "";
 
 let board = [];
+let solvedBoard = [];
 
 let moves = 0;
 let startTime = null;
-let gameFinished = false;
+let timerId = null;
 
 /* =========================================
    Завантаження даних
@@ -128,12 +129,29 @@ function onBoardClick(event) {
   }
 
   moveTile(tileIndex);
+  // Після першого успішного ходу запускаємо таймер
+  if (startTime === null) {
+    startTimer();
+  }
 
+  // Оновлюємо статистику гри.
   moves++;
-  movesElement.textContent = moves;
+  movesElement.textContent = `${moves} ходів`;
 
+  // Оновлюємо ігрове поле.
   renderGameBoard();
-  //console.log(getAvailableMoves());
+
+  // Перевіряємо завершення гри.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (checkWin()) {
+        stopTimer();
+        showWinMessage();
+        completeBoard();
+        restartButtonElement.classList.remove("is-hidden");
+      }
+    });
+  });
 }
 
 /**
@@ -217,6 +235,121 @@ function shuffleBoard() {
   }
 }
 
+/**
+ * Перевіряє, чи зібраний пазл.
+ */
+function checkWin() {
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] !== solvedBoard[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Запускає таймер.
+ */
+function startTimer() {
+  startTime = Date.now();
+
+  timerId = setInterval(updateTimer, 1000);
+}
+
+/**
+ * Оновлює показання таймера.
+ */
+function updateTimer() {
+  const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+
+  timerElement.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+/**
+ * Зупиняє таймер.
+ */
+function stopTimer() {
+  clearInterval(timerId);
+
+  timerId = null;
+}
+
+/**
+ * Виводить повідомлення про завершення гри.
+ */
+function showWinMessage() {
+  const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
+
+  const formattedTime = formatTime(totalSeconds);
+
+  messageElement.innerHTML = `
+    <strong>🎉 Гру завершено!</strong><br>
+    Час: ${formattedTime}<br>
+    Ходів: ${moves}
+  `;
+}
+
+/**
+ * Запускає нову гру.
+ */
+function restartGame() {
+  gameBoardElement.classList.remove("game__board--completed");
+  moves = 0;
+  startTime = null;
+
+  messageElement.textContent = "";
+
+  movesElement.textContent = "0";
+  timerElement.textContent = "00:00";
+
+  init();
+}
+
+/**
+ * Оформлює поле після завершення гри.
+ */
+function completeBoard() {
+  gameBoardElement.classList.add("game__board--completed");
+
+  const tiles = gameBoardElement.querySelectorAll(".game__tile");
+
+  for (const tile of tiles) {
+    tile.classList.add("game__tile--completed");
+
+    const badge = tile.querySelector(".game__tile-number");
+
+    if (badge) {
+      badge.classList.add("game__tile-number--hidden");
+    }
+  }
+  const emptyTile = gameBoardElement.querySelector(".game__tile--empty");
+  if (!emptyTile) {
+    return;
+  }
+  const row = info.size - 1;
+  const col = info.size - 1;
+  emptyTile.style.backgroundImage = `url("${imagePath}")`;
+
+  emptyTile.style.backgroundSize = `${info.size * 100}%`;
+
+  emptyTile.style.backgroundPosition = `${(col * 100) / (info.size - 1)}% ${(row * 100) / (info.size - 1)}%`;
+  emptyTile.classList.remove("game__tile--empty");
+  emptyTile.classList.add("game__tile--completed");
+}
+/**
+ * Форматує час у хвилини та секунди.
+ */
+function formatTime(totalSeconds) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${minutes} хв ${String(seconds).padStart(2, "0")} с`;
+}
+
 /* =========================================
    Ініціалізація
    ========================================= */
@@ -227,15 +360,21 @@ async function init() {
 
   createBoardModel(info.size);
 
+  // Запам'ятовуємо правильний стан пазла.
+  solvedBoard = board.slice();
+
   shuffleBoard();
 
   renderGameBoard();
 
-  gameBoardElement.addEventListener("click", onBoardClick);
+  restartButtonElement.classList.add("is-hidden");
 }
 
 /* =========================================
    Запуск гри
    ========================================= */
+
+gameBoardElement.addEventListener("click", onBoardClick);
+restartButtonElement.addEventListener("click", restartGame);
 
 init();
