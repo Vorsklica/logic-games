@@ -80,6 +80,7 @@ body {
 
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .game__board--completed {
   gap: 0;
@@ -103,6 +104,8 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 
   transition: opacity 0.5s ease;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 .game__tile--active {
