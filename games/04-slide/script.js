@@ -436,7 +436,7 @@ async function init() {
    Запуск гри
    ========================================= */
 
-gameBoardElement.addEventListener("click", onBoardClick);
+//gameBoardElement.addEventListener("click", onBoardClick);
 restartButtonElement.addEventListener("click", restartGame);
 
 gameBoardElement.addEventListener("touchstart", onTouchStart);
