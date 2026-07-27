@@ -383,26 +383,29 @@ function onTouchStart(event) {
 
 function onTouchMove(event) {
   event.preventDefault();
-}
-
-function onTouchEnd(event) {
   if (!touchTile) {
     return;
   }
 
-  const touch = event.changedTouches[0];
+  event.preventDefault();
+
+  const touch = event.touches[0];
 
   const deltaX = touch.clientX - touchStartX;
   const deltaY = touch.clientY - touchStartY;
 
   const distance = Math.hypot(deltaX, deltaY);
 
-  if (distance > 20) {
+  if (distance > 20 && !touchDragging) {
+    touchDragging = true;
+
     const tileNumber = Number(touchTile.dataset.number);
 
     tryMoveTile(tileNumber);
   }
+}
 
+function onTouchEnd() {
   touchTile = null;
   touchDragging = false;
 }
