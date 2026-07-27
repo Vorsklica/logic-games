@@ -436,11 +436,24 @@ async function init() {
    Запуск гри
    ========================================= */
 
-//gameBoardElement.addEventListener("click", onBoardClick);
 restartButtonElement.addEventListener("click", restartGame);
 
-gameBoardElement.addEventListener("touchstart", onTouchStart);
-gameBoardElement.addEventListener("touchmove", onTouchMove);
-gameBoardElement.addEventListener("touchend", onTouchEnd);
+const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+if (isTouchDevice) {
+  gameBoardElement.addEventListener("touchstart", onTouchStart);
+  gameBoardElement.addEventListener("touchmove", onTouchMove, {
+    passive: false,
+  });
+  gameBoardElement.addEventListener("touchend", onTouchEnd);
+} else {
+  gameBoardElement.addEventListener("click", onBoardClick);
+}
+
+//gameBoardElement.addEventListener("click", onBoardClick);
+
+//gameBoardElement.addEventListener("touchstart", onTouchStart);
+//gameBoardElement.addEventListener("touchmove", onTouchMove);
+//gameBoardElement.addEventListener("touchend", onTouchEnd);
 
 init();
