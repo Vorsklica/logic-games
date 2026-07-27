@@ -378,7 +378,6 @@ function onTouchStart(event) {
 
   touchDragging = false;
 }
-
 function onTouchMove(event) {
   event.preventDefault();
   if (!touchTile) {
