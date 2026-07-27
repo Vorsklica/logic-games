@@ -363,10 +363,38 @@ function tryMoveTile(tileNumber) {
 }
 
 function onTouchStart(event) {
+  const tile = event.target.closest(".game__tile");
+
+  if (!tile) {
+    return;
+  }
+
+  touchTile = tile;
+
+  const touch = event.touches[0];
+
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+
+  touchDragging = false;
+
   messageElement.textContent = "TOUCH START";
 }
 
-function onTouchMove(event) {}
+function onTouchMove(event) {
+  if (!touchTile) {
+    return;
+  }
+
+  const touch = event.touches[0];
+
+  const deltaX = touch.clientX - touchStartX;
+  const deltaY = touch.clientY - touchStartY;
+
+  const distance = Math.hypot(deltaX, deltaY);
+
+  messageElement.textContent = `Зсув: ${Math.round(distance)} px`;
+}
 
 function onTouchEnd(event) {}
 
