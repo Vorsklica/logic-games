@@ -382,21 +382,30 @@ function onTouchStart(event) {
 }
 
 function onTouchMove(event) {
+  event.preventDefault();
+}
+
+function onTouchEnd(event) {
   if (!touchTile) {
     return;
   }
 
-  const touch = event.touches[0];
+  const touch = event.changedTouches[0];
 
   const deltaX = touch.clientX - touchStartX;
   const deltaY = touch.clientY - touchStartY;
 
   const distance = Math.hypot(deltaX, deltaY);
 
-  messageElement.textContent = `Зсув: ${Math.round(distance)} px`;
-}
+  if (distance > 20) {
+    const tileNumber = Number(touchTile.dataset.number);
 
-function onTouchEnd(event) {}
+    tryMoveTile(tileNumber);
+  }
+
+  touchTile = null;
+  touchDragging = false;
+}
 
 /* =========================================
    Ініціалізація
