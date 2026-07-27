@@ -4,5 +4,5 @@
 
 export default {
   // Кількість кроків алгоритму перемішування.
-  shuffleSteps: 3,
+  shuffleSteps: 200,
 };

@@ -377,8 +377,6 @@ function onTouchStart(event) {
   touchStartY = touch.clientY;
 
   touchDragging = false;
-
-  messageElement.textContent = "TOUCH START";
 }
 
 function onTouchMove(event) {
@@ -396,10 +394,8 @@ function onTouchMove(event) {
 
   const distance = Math.hypot(deltaX, deltaY);
 
-  if (distance > 20 && !touchDragging) {
+  if (distance > 12 && !touchDragging) {
     touchDragging = true;
-
-    messageElement.textContent = "MOVE!";
 
     const tileNumber = Number(touchTile.dataset.number);
 
@@ -449,11 +445,5 @@ if (isTouchDevice) {
 } else {
   gameBoardElement.addEventListener("click", onBoardClick);
 }
-
-//gameBoardElement.addEventListener("click", onBoardClick);
-
-//gameBoardElement.addEventListener("touchstart", onTouchStart);
-//gameBoardElement.addEventListener("touchmove", onTouchMove);
-//gameBoardElement.addEventListener("touchend", onTouchEnd);
 
 init();
