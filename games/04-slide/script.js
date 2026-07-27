@@ -399,6 +399,8 @@ function onTouchMove(event) {
   if (distance > 20 && !touchDragging) {
     touchDragging = true;
 
+    messageElement.textContent = "MOVE!";
+
     const tileNumber = Number(touchTile.dataset.number);
 
     tryMoveTile(tileNumber);
