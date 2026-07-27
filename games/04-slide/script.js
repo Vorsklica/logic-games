@@ -35,11 +35,12 @@ let moves = 0;
 let startTime = null;
 let timerId = null;
 
-/* Для реалізації swipe на смартфоні */
-let pointerStartX = 0;
-let pointerStartY = 0;
+/**Для реалізації свпйпу на телефоні */
+let touchStartX = 0;
+let touchStartY = 0;
 
-let pointerTile = null;
+let touchTile = null;
+let touchDragging = false;
 
 /* =========================================
    Завантаження даних
@@ -128,36 +129,8 @@ function onBoardClick(event) {
   }
 
   const tileNumber = Number(tile.dataset.number);
-  const tileIndex = board.indexOf(tileNumber);
 
-  if (!canMove(tileIndex)) {
-    return;
-  }
-
-  moveTile(tileIndex);
-  // Після першого успішного ходу запускаємо таймер
-  if (startTime === null) {
-    startTimer();
-  }
-
-  // Оновлюємо статистику гри.
-  moves++;
-  movesElement.textContent = `${moves} ходів`;
-
-  // Оновлюємо ігрове поле.
-  renderGameBoard();
-
-  // Перевіряємо завершення гри.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      if (checkWin()) {
-        stopTimer();
-        showWinMessage();
-        completeBoard();
-        restartButtonElement.classList.remove("is-hidden");
-      }
-    });
-  });
+  tryMoveTile(tileNumber);
 }
 
 /**
@@ -356,33 +329,46 @@ function formatTime(totalSeconds) {
   return `${minutes} хв ${String(seconds).padStart(2, "0")} с`;
 }
 
-function onPointerDown(event) {
-  const tile = event.target.closest(".game__tile");
+/**
+ * Виконує спробу перемістити плитку.
+ */
+function tryMoveTile(tileNumber) {
+  const tileIndex = board.indexOf(tileNumber);
 
-  if (!tile) {
+  if (!canMove(tileIndex)) {
     return;
   }
 
-  pointerTile = tile;
+  moveTile(tileIndex);
 
-  pointerStartX = event.clientX;
-  pointerStartY = event.clientY;
-}
-
-function onPointerUp(event) {
-  if (!pointerTile) {
-    return;
+  if (startTime === null) {
+    startTimer();
   }
 
-  const deltaX = event.clientX - pointerStartX;
-  const deltaY = event.clientY - pointerStartY;
+  moves++;
+  movesElement.textContent = moves;
 
-  const distance = Math.hypot(deltaX, deltaY);
-  /**Тестування */
-  messageElement.textContent = `Зсув: ${Math.round(distance)} px`;
-  /**========== */
-  pointerTile = null;
+  renderGameBoard();
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (checkWin()) {
+        stopTimer();
+        showWinMessage();
+        completeBoard();
+        restartButtonElement.classList.remove("is-hidden");
+      }
+    });
+  });
 }
+
+function onTouchStart(event) {
+  messageElement.textContent = "TOUCH START";
+}
+
+function onTouchMove(event) {}
+
+function onTouchEnd(event) {}
 
 /* =========================================
    Ініціалізація
@@ -409,8 +395,10 @@ async function init() {
    ========================================= */
 
 gameBoardElement.addEventListener("click", onBoardClick);
-gameBoardElement.addEventListener("pointerdown", onPointerDown);
-gameBoardElement.addEventListener("pointerup", onPointerUp);
 restartButtonElement.addEventListener("click", restartGame);
+
+gameBoardElement.addEventListener("touchstart", onTouchStart);
+gameBoardElement.addEventListener("touchmove", onTouchMove);
+gameBoardElement.addEventListener("touchend", onTouchEnd);
 
 init();
