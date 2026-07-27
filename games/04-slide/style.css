@@ -81,6 +81,7 @@ body {
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: none;
 }
 .game__board--completed {
   gap: 0;
