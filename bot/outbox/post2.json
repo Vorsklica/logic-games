@@ -1,12 +1,12 @@
 {
-  "publishAt": "2026-07-22T06:22:00+03:00",
-  "image": "01.png",
-  "text": "🧩 Задача на логічне мислення. ",
+  "publishAt": "2026-07-27T06:00:00+03:00",
+  "image": "Пазл5х5.jpg",
+  "text": "🧩 Зберіть пазл. Рівень складності - 5х5",
   "game": {
-    "id": "03-input",
+    "id": "04-slide",
     "set": 2
   },
   "status": "published",
-  "messageId": 46,
-  "publishedAt": "2026-07-22T19:29:37.403Z"
+  "messageId": 51,
+  "publishedAt": "2026-07-27T18:43:31.330Z"
 }

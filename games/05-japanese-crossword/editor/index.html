@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Редактор японських кросвордів</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="editor">
+    <header id="editor_header" class="editor__header">
+      <h1 id="editor_title" class="editor__title"></h1>
+    </header>
+
+    <section id="editor_toolbar" class="editor__toolbar">
+      <div class="editor__document">
+        <span class="editor__label"> Розмір поля: </span>
+
+        <span id="editor_documentSize" class="editor__value"></span>
+      </div>
+
+      <div class="editor__buttons">
+        <button id="editor_buttonNew" class="editor__button" type="button">
+          Новий
+        </button>
+
+        <button id="editor_buttonOpen" class="editor__button" type="button">
+          Відкрити
+        </button>
+
+        <button id="editor_buttonSave" class="editor__button" type="button">
+          Зберегти
+        </button>
+      </div>
+    </section>
+
+    <section id="editor_workspace" class="editor__workspace">
+      <div id="editor_columnHints" class="editor__columnHints"></div>
+
+      <div id="editor_rowHints" class="editor__rowHints"></div>
+
+      <div id="editor_board" class="editor__board"></div>
+    </section>
+
+    <section id="editor_actions" class="editor__actions">
+      <button id="editor_buttonClear" class="editor__button" type="button">
+        Очистити
+      </button>
+
+      <button id="editor_buttonInvert" class="editor__button" type="button">
+        Інвертувати
+      </button>
+
+      <button
+        id="editor_buttonBuildHints"
+        class="editor__button"
+        type="button"
+        disabled
+      >
+        Побудувати підказки
+      </button>
+
+      <button
+        id="editor_buttonValidate"
+        class="editor__button"
+        type="button"
+        disabled
+      >
+        Перевірити
+      </button>
+
+      <button
+        id="editor_buttonExport"
+        class="editor__button"
+        type="button"
+        disabled
+      >
+        Експорт
+      </button>
+    </section>
+
+    <footer id="editor_statusBar" class="editor__statusBar">
+      <span id="editor_documentName" class="editor__documentName"></span>
+      <span id="editor_statusText" class="editor__statusText"></span>
+      <span id="editor_statusSize" class="editor__status-size"></span>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
