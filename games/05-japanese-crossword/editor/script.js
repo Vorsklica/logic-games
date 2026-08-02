@@ -1,4 +1,19 @@
 import config from "./config.js";
+import { generateHints } from "../common/hints.js";
+
+const DEBUG = false;
+
+if (DEBUG) {
+  const bitmap = [
+    [1, 1, 0, 1, 1],
+    [0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1],
+    [1, 0, 1, 0, 1],
+    [0, 1, 1, 0, 0],
+  ];
+
+  console.log(generateHints(bitmap));
+}
 
 const editorTitle = document.getElementById("editor_title");
 const editorDocumentSize = document.getElementById("editor_documentSize");
@@ -11,6 +26,8 @@ const editorButtonSave = document.getElementById("editor_buttonSave");
 const editorDocumentName = document.getElementById("editor_documentName");
 const editorStatusText = document.getElementById("editor_statusText");
 const editorStatusSize = document.getElementById("editor_statusSize");
+const editorRowHints = document.getElementById("editor_rowHints");
+const editorColumnHints = document.getElementById("editor_columnHints");
 
 const documentState = {
   title: config.editorTitle,
@@ -21,6 +38,9 @@ const documentState = {
   fileHandle: null,
   filePath: null,
 };
+
+const ROW = "row";
+const COLUMN = "column";
 
 editorBoard.addEventListener("click", onBoardClick);
 editorButtonClear.addEventListener("click", onButtonClearClick);
@@ -43,7 +63,8 @@ function onBoardClick(event) {
 
   toggleCell(row, col);
   updateEditorInfo();
-  printBitmap(); // Для тестування
+  updateHints();
+  //printBitmap(); // Для тестування
 }
 
 function initialize() {
@@ -59,7 +80,7 @@ function createBitmap() {
   documentState.bitmap = [];
 
   for (let row = 0; row < documentState.height; row++) {
-    documentState.bitmap.push("0".repeat(documentState.width));
+    documentState.bitmap.push(new Array(documentState.width).fill(0));
   }
 }
 
@@ -85,12 +106,7 @@ function createBoard() {
 }
 
 function toggleCell(row, col) {
-  const line = documentState.bitmap[row];
-
-  const value = line[col] === "0" ? "1" : "0";
-
-  documentState.bitmap[row] =
-    line.substring(0, col) + value + line.substring(col + 1);
+  documentState.bitmap[row][col] ^= 1;
 
   renderCell(row, col);
   setModified();
@@ -98,10 +114,9 @@ function toggleCell(row, col) {
 
 function renderCell(row, col) {
   const index = row * documentState.width + col;
-
   const cell = editorBoard.children[index];
 
-  if (documentState.bitmap[row][col] === "1") {
+  if (documentState.bitmap[row][col]) {
     cell.classList.add("editor__cell--filled");
   } else {
     cell.classList.remove("editor__cell--filled");
@@ -117,6 +132,7 @@ function onButtonClearClick(event) {
 
   clearBitmap();
   updateEditorInfo();
+  updateHints();
   renderBoard();
 }
 
@@ -127,14 +143,11 @@ function clearBitmap() {
 
 function invertBitmap() {
   for (let row = 0; row < documentState.height; row++) {
-    let line = "";
-
     for (let col = 0; col < documentState.width; col++) {
-      line += documentState.bitmap[row][col] === "0" ? "1" : "0";
+      documentState.bitmap[row][col] = 1 - documentState.bitmap[row][col];
     }
-
-    documentState.bitmap[row] = line;
   }
+
   setModified();
 }
 
@@ -142,6 +155,7 @@ function onButtonInvertClick(event) {
   invertBitmap();
   updateEditorInfo();
   renderBoard();
+  updateHints();
 }
 
 function renderBoard() {
@@ -166,6 +180,7 @@ function newDocument() {
   createBitmap();
   createBoard();
   renderBoard();
+  updateHints();
 
   documentState.documentName = config.defaultDocumentName;
   documentState.fileHandle = null;
@@ -271,10 +286,9 @@ async function openDocument() {
   loadDocumentData(documentData, fileHandle);
 
   createBoard();
-
   renderBoard();
-
   updateEditorInfo();
+  updateHints();
 }
 
 async function openDocumentDialog() {
@@ -347,4 +361,47 @@ function updateEditorInfo() {
   editorStatusText.textContent = documentState.isModified
     ? "Документ змінено"
     : "Готово";
+}
+
+function renderHints(hints) {
+  editorRowHints.replaceChildren();
+  editorColumnHints.replaceChildren();
+
+  for (const hint of hints.rows) {
+    editorRowHints.append(createHintElement(hint, ROW));
+  }
+
+  for (const hint of hints.cols) {
+    editorColumnHints.append(createHintElement(hint, COLUMN));
+  }
+}
+
+/**
+ * Створює DOM-елемент підказки.
+ *
+ * @param {number[]} hint Масив чисел підказки.
+ * @param {string} orientation ROW або COLUMN.
+ * @returns {HTMLDivElement}
+ */
+function createHintElement(hint, orientation) {
+  const element = document.createElement("div");
+
+  if (orientation === ROW) {
+    element.className = "editor__rowHint";
+  } else {
+    element.className = "editor__columnHint";
+  }
+
+  for (const value of hint) {
+    const span = document.createElement("span");
+    span.textContent = value;
+    element.append(span);
+  }
+
+  return element;
+}
+
+function updateHints() {
+  const hints = generateHints(documentState.bitmap);
+  renderHints(hints);
 }
