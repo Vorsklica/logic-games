@@ -16,7 +16,7 @@
 
     <section id="editor_toolbar" class="editor__toolbar">
       <div class="editor__document">
-        <span class="editor__label"> Розмір поля: </span>
+        <span id="editor_massage" class="editor__massage"></span>
 
         <span id="editor_documentSize" class="editor__value"></span>
       </div>
@@ -43,6 +43,16 @@
       <div id="editor_rowHints" class="editor__rowHints"></div>
 
       <div id="editor_board" class="editor__board"></div>
+      <!--Вікно повідомлень---------------------------------------------------------->
+      <div id="editor_message" class="editor__message editor__message--hidden">
+        <div class="editor__messageWindow">
+          <p id="editor_messageText"></p>
+          <button id="editor_closeMessageButton" class="editor__button">
+            Закрити
+          </button>
+        </div>
+      </div>
+      <!--Кінець вікна повідомлень----------------------------------------------------->
     </section>
 
     <section id="editor_actions" class="editor__actions">
@@ -54,12 +64,7 @@
         Інвертувати
       </button>
 
-      <button
-        id="editor_buttonValidate"
-        class="editor__button"
-        type="button"
-        disabled
-      >
+      <button id="editor_buttonValidate" class="editor__button" type="button">
         Перевірити
       </button>
 

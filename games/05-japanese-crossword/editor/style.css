@@ -43,6 +43,7 @@
 }
 
 .editor__workspace {
+  position: relative;
   display: grid;
 
   grid-template-columns:
@@ -167,4 +168,33 @@
 .editor__board {
   grid-column: 2;
   grid-row: 2;
+}
+
+.editor__message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.editor__message--hidden {
+  display: none;
+}
+
+.editor__messageWindow {
+  width: 65%;
+  height: 40%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  border-radius: 8px;
+  padding: 24px;
+  background: white;
+  border: 1px solid #666;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }

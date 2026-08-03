@@ -1,21 +1,14 @@
 import config from "./config.js";
 import { generateHints } from "../common/hints.js";
+import { solve } from "../common/solver.js";
 
 const DEBUG = false;
 
 if (DEBUG) {
-  const bitmap = [
-    [1, 1, 0, 1, 1],
-    [0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1],
-    [1, 0, 1, 0, 1],
-    [0, 1, 1, 0, 0],
-  ];
-
-  console.log(generateHints(bitmap));
 }
 
 const editorTitle = document.getElementById("editor_title");
+const editorMassage = document.getElementById("editor_massage");
 const editorDocumentSize = document.getElementById("editor_documentSize");
 const editorBoard = document.getElementById("editor_board");
 const editorButtonClear = document.getElementById("editor_buttonClear");
@@ -23,11 +16,17 @@ const editorButtonInvert = document.getElementById("editor_buttonInvert");
 const editorButtonNew = document.getElementById("editor_buttonNew");
 const editorButtonOpen = document.getElementById("editor_buttonOpen");
 const editorButtonSave = document.getElementById("editor_buttonSave");
+const editorButtonValidate = document.getElementById("editor_buttonValidate");
 const editorDocumentName = document.getElementById("editor_documentName");
 const editorStatusText = document.getElementById("editor_statusText");
 const editorStatusSize = document.getElementById("editor_statusSize");
 const editorRowHints = document.getElementById("editor_rowHints");
 const editorColumnHints = document.getElementById("editor_columnHints");
+const editorMessageText = document.getElementById("editor_messageText");
+const editorMessage = document.getElementById("editor_message");
+const editorCloseMessageButton = document.getElementById(
+  "editor_closeMessageButton",
+);
 
 const documentState = {
   title: config.editorTitle,
@@ -48,6 +47,8 @@ editorButtonInvert.addEventListener("click", onButtonInvertClick);
 editorButtonNew.addEventListener("click", onButtonNewClick);
 editorButtonSave.addEventListener("click", onButtonSaveClick);
 editorButtonOpen.addEventListener("click", onButtonOpenClick);
+editorButtonValidate.addEventListener("click", onButtonValidate);
+editorCloseMessageButton.addEventListener("click", hideMessage);
 
 initialize();
 
@@ -404,4 +405,29 @@ function createHintElement(hint, orientation) {
 function updateHints() {
   const hints = generateHints(documentState.bitmap);
   renderHints(hints);
+}
+function onButtonValidate(event) {
+  const hints = generateHints(documentState.bitmap);
+
+  const solutionCount = solve(hints);
+
+  showMessage(`Кількість розв'язків: ${solutionCount}`);
+}
+
+/**
+ *
+ * Відображає модальне повідомлення.
+ *
+ * @param {string} message Текст повідомлення.
+ */
+function showMessage(message) {
+  editorMessageText.textContent = message;
+  editorMessage.classList.remove("editor__message--hidden");
+}
+
+/**
+ * Приховує вікно повідомлення.
+ */
+function hideMessage(event) {
+  editorMessage.classList.add("editor__message--hidden");
 }
