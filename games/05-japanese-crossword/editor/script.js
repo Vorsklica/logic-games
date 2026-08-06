@@ -1,6 +1,10 @@
 import config from "./config.js";
 import { generateHints } from "../common/hints.js";
 import { solve } from "../common/solver.js";
+import {
+  showSolutions,
+  initializeSolutionViewer,
+} from "../common/solutionViewer.js";
 
 const DEBUG = false;
 
@@ -52,22 +56,6 @@ editorCloseMessageButton.addEventListener("click", hideMessage);
 
 initialize();
 
-function onBoardClick(event) {
-  const cell = event.target;
-
-  if (!cell.classList.contains("editor__cell")) {
-    return;
-  }
-
-  const row = Number(cell.dataset.row);
-  const col = Number(cell.dataset.col);
-
-  toggleCell(row, col);
-  updateEditorInfo();
-  updateHints();
-  //printBitmap(); // Для тестування
-}
-
 function initialize() {
   editorTitle.textContent = `${documentState.title}`;
   editorDocumentSize.textContent = `${documentState.width} × ${documentState.height}`;
@@ -75,6 +63,7 @@ function initialize() {
 
   createBoard();
   updateEditorInfo();
+  initializeSolutionViewer();
 }
 
 function createBitmap() {
@@ -122,6 +111,22 @@ function renderCell(row, col) {
   } else {
     cell.classList.remove("editor__cell--filled");
   }
+}
+
+function onBoardClick(event) {
+  const cell = event.target;
+
+  if (!cell.classList.contains("editor__cell")) {
+    return;
+  }
+
+  const row = Number(cell.dataset.row);
+  const col = Number(cell.dataset.col);
+
+  toggleCell(row, col);
+  updateEditorInfo();
+  updateHints();
+  //printBitmap(); // Для тестування
 }
 
 function onButtonClearClick(event) {
@@ -409,9 +414,10 @@ function updateHints() {
 function onButtonValidate(event) {
   const hints = generateHints(documentState.bitmap);
 
-  const solutionCount = solve(hints);
+  const result = solve(hints);
 
-  showMessage(`Кількість розв'язків: ${solutionCount}`);
+  //showMessage(`Кількість розв'язків: ${solutionCount}`);
+  showSolutions(result.solutions);
 }
 
 /**

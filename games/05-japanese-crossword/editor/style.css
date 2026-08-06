@@ -169,7 +169,7 @@
   grid-column: 2;
   grid-row: 2;
 }
-
+/************************* Вікно повідомлень з кнопкою *********************/
 .editor__message {
   position: absolute;
   inset: 0;
@@ -197,4 +197,113 @@
   background: white;
   border: 1px solid #666;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* -------------------- editor__solutionViewer -------------------- */
+
+.editor__solutionViewer {
+  position: absolute;
+
+  left: calc(100% + 20px);
+  top: 0;
+
+  display: block;
+
+  background: none;
+}
+
+.editor__solutionViewer--hidden {
+  display: none;
+}
+
+.editor__solutionWindow {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: fit-content;
+  height: fit-content;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background-color: white;
+
+  border: 1px solid #666;
+  border-radius: 8px;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* -------------------- Заголовок -------------------- */
+
+.editor__solutionHeader {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 auto;
+
+  margin-bottom: 20px;
+}
+
+.editor__solutionInfo {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.editor__solutionCloseButton {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* -------------------- Область bitmap -------------------- */
+
+.editor__solutionBody {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor__solutionBoard {
+  display: grid;
+
+  border: 1px solid #444;
+}
+
+/* -------------------- Нижня панель -------------------- */
+
+.editor__solutionFooter {
+  display: flex;
+  justify-content: center;
+
+  gap: 20px;
+
+  flex: 0 0 auto;
+
+  margin-top: 20px;
+}
+
+.editor__solutionNavigationButton {
+  min-width: 44px;
 }

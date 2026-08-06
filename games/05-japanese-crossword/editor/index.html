@@ -53,6 +53,57 @@
         </div>
       </div>
       <!--Кінець вікна повідомлень----------------------------------------------------->
+
+      <!-- Спеціалізований переглядач альтернативних розв'язків -->
+      <div
+        id="editor_solutionViewer"
+        class="editor__solutionViewer editor__solutionViewer--hidden"
+      >
+        <div class="editor__solutionWindow">
+          <div class="editor__solutionHeader">
+            <div id="editor_solutionInfo" class="editor__solutionInfo">
+              Розв'язок 1 із 1
+            </div>
+
+            <button
+              id="editor_solutionCloseButton"
+              class="editor__solutionCloseButton"
+              type="button"
+              title="Закрити"
+              aria-label="Закрити"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div class="editor__solutionBody">
+            <div id="editor_solutionBoard" class="editor__solutionBoard"></div>
+          </div>
+
+          <div class="editor__solutionFooter">
+            <button
+              id="editor_previousSolutionButton"
+              class="editor__button editor__solutionNavigationButton"
+              type="button"
+              title="Попередній розв'язок"
+              aria-label="Попередній розв'язок"
+            >
+              ‹
+            </button>
+
+            <button
+              id="editor_nextSolutionButton"
+              class="editor__button editor__solutionNavigationButton"
+              type="button"
+              title="Наступний розв'язок"
+              aria-label="Наступний розв'язок"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      </div>
+      <!------------------------------------------------------------------------------->
     </section>
 
     <section id="editor_actions" class="editor__actions">

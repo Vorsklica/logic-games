@@ -25,6 +25,8 @@ export function solve(hints) {
 
   // Лічильник знайдених розв'язків.
   let solutionCount = 0;
+  const solutions = [];
+  const MAX_SOLUTIONS = 100;
 
   /**
    * Рекурсивно перебирає всі допустимі патерни рядків.
@@ -35,6 +37,10 @@ export function solve(hints) {
     // Усі рядки заповнені — знайдено один розв'язок.
     if (row === height) {
       solutionCount++;
+      if (solutionCount >= MAX_SOLUTIONS) {
+        return;
+      }
+      solutions.push(copyBitmap(bitmap));
       return;
     }
 
@@ -50,7 +56,10 @@ export function solve(hints) {
 
   search(0);
 
-  return solutionCount;
+  return {
+    solutionCount,
+    solutions,
+  };
 }
 
 /**
@@ -166,4 +175,14 @@ function isCompatible(bitmap, currentRow, columnPatterns) {
   }
 
   return true;
+}
+
+/**
+ * Створює глибоку копію bitmap.
+ *
+ * @param {number[][]} bitmap Вихідний bitmap.
+ * @returns {number[][]} Копія bitmap.
+ */
+function copyBitmap(bitmap) {
+  return bitmap.map((row) => [...row]);
 }
