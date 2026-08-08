@@ -5,6 +5,11 @@ import {
   showSolutions,
   initializeSolutionViewer,
 } from "../common/solutionViewer.js";
+import {
+  saveProjectHandle,
+  loadProjectHandle,
+  clearProjectHandle,
+} from "./service/projectStorage.js";
 
 const DEBUG = false;
 
@@ -21,6 +26,7 @@ const editorButtonNew = document.getElementById("editor_buttonNew");
 const editorButtonOpen = document.getElementById("editor_buttonOpen");
 const editorButtonSave = document.getElementById("editor_buttonSave");
 const editorButtonValidate = document.getElementById("editor_buttonValidate");
+const editorButtonExport = document.getElementById("editor_buttonExport");
 const editorDocumentName = document.getElementById("editor_documentName");
 const editorStatusText = document.getElementById("editor_statusText");
 const editorStatusSize = document.getElementById("editor_statusSize");
@@ -45,6 +51,8 @@ const documentState = {
 const ROW = "row";
 const COLUMN = "column";
 
+let solutionCount = 0;
+
 editorBoard.addEventListener("click", onBoardClick);
 editorButtonClear.addEventListener("click", onButtonClearClick);
 editorButtonInvert.addEventListener("click", onButtonInvertClick);
@@ -53,6 +61,7 @@ editorButtonSave.addEventListener("click", onButtonSaveClick);
 editorButtonOpen.addEventListener("click", onButtonOpenClick);
 editorButtonValidate.addEventListener("click", onButtonValidate);
 editorCloseMessageButton.addEventListener("click", hideMessage);
+editorButtonExport.addEventListener("click", exportDocument);
 
 initialize();
 
@@ -162,6 +171,7 @@ function onButtonInvertClick(event) {
   updateEditorInfo();
   renderBoard();
   updateHints();
+  setModified();
 }
 
 function renderBoard() {
@@ -187,12 +197,14 @@ function newDocument() {
   createBoard();
   renderBoard();
   updateHints();
+  solutionCount = 0;
 
   documentState.documentName = config.defaultDocumentName;
   documentState.fileHandle = null;
   documentState.isModified = false;
 
   updateEditorInfo();
+  updateExportButton();
 }
 /**
  * ========================================================
@@ -214,7 +226,7 @@ async function saveDocument() {
   await writeDocument();
 
   documentState.isModified = false;
-
+  updateExportButton(); // Якщо solutionCount == 1, то кнопка Експорт роозблокована.
   updateEditorInfo();
 }
 
@@ -295,6 +307,7 @@ async function openDocument() {
   renderBoard();
   updateEditorInfo();
   updateHints();
+  updateExportButton();
 }
 
 async function openDocumentDialog() {
@@ -349,6 +362,7 @@ function printBitmap() {
 
 function setModified() {
   documentState.isModified = true;
+  updateExportButton();
 }
 
 function canDiscardChanges() {
@@ -436,4 +450,118 @@ function showMessage(message) {
  */
 function hideMessage(event) {
   editorMessage.classList.add("editor__message--hidden");
+}
+
+function updateExportButton() {
+  const hints = generateHints(documentState.bitmap);
+  const result = solve(hints);
+  solutionCount = result.solutionCount;
+  editorButtonExport.disabled = documentState.isModified || solutionCount !== 1;
+}
+
+async function getNextDataSetNumber(contentDirHandle) {
+  let maxNumber = 0;
+
+  for await (const [name, handle] of contentDirHandle.entries()) {
+    if (handle.kind !== "directory") {
+      continue;
+    }
+
+    const match = name.match(/^data-(\d+)$/);
+
+    if (!match) {
+      continue;
+    }
+
+    const number = Number(match[1]);
+
+    if (number > maxNumber) {
+      maxNumber = number;
+    }
+  }
+
+  return maxNumber + 1;
+}
+
+async function getContentDirHandle() {
+  let projectDirHandle = await loadProjectHandle();
+
+  if (!projectDirHandle) {
+    projectDirHandle = await window.showDirectoryPicker();
+
+    await saveProjectHandle(projectDirHandle);
+  }
+
+  const permission = await projectDirHandle.queryPermission({
+    mode: "readwrite",
+  });
+
+  if (permission !== "granted") {
+    const requestedPermission = await projectDirHandle.requestPermission({
+      mode: "readwrite",
+    });
+
+    if (requestedPermission !== "granted") {
+      throw new Error("Немає дозволу на запис у папку проєкту.");
+    }
+  }
+
+  const contentDirHandle = await projectDirHandle.getDirectoryHandle("content");
+
+  return contentDirHandle;
+}
+
+async function createDataSetDirectory() {
+  const contentDirHandle = await getContentDirHandle();
+
+  const nextNumber = await getNextDataSetNumber(contentDirHandle);
+
+  const folderName = `data-${String(nextNumber).padStart(3, "0")}`;
+
+  const dataSetDirHandle = await contentDirHandle.getDirectoryHandle(
+    folderName,
+    {
+      create: true,
+    },
+  );
+
+  return dataSetDirHandle;
+}
+
+function createDataFileContent() {
+  return `export default {
+
+    meta: {
+        sourceFile: "${documentState.documentName}"
+    },
+
+    width: ${documentState.width},
+    height: ${documentState.height},
+
+    bitmap: ${JSON.stringify(documentState.bitmap, null, 4)}
+
+};
+`;
+}
+async function writeDataFile(dataSetDirHandle) {
+  const fileHandle = await dataSetDirHandle.getFileHandle("data.js", {
+    create: true,
+  });
+
+  const writable = await fileHandle.createWritable();
+
+  const content = createDataFileContent();
+
+  await writable.write(content);
+  await writable.close();
+}
+
+async function exportDocument() {
+  try {
+    const dataSetDirHandle = await createDataSetDirectory();
+
+    await writeDataFile(dataSetDirHandle);
+  } catch (error) {
+    console.error("Помилка експорту:", error);
+  }
 }
