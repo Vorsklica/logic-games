@@ -1,4 +1,5 @@
 import { getDataFolder } from "../common/url.js";
+import { generateHints } from "./common/hints.js";
 
 const dataFolder = getDataFolder();
 
@@ -12,8 +13,14 @@ gameBoard.addEventListener("click", onCellClick);
 
 function initializeGame(gameData) {
   gameState = createGameState(gameData);
+
   createGameBoard(gameData);
   renderGameBoard(gameState);
+
+  const hints = generateHints(gameData.bitmap);
+
+  renderRowHints(hints.rows);
+  renderColumnHints(hints.cols);
 }
 
 initializeGame(gameData);
@@ -87,4 +94,73 @@ function onCellClick(event) {
   gameState.bitmap[row][col] = (gameState.bitmap[row][col] + 1) % 3;
 
   renderGameBoard(gameState);
+  if (checkSolution()) {
+    finishGame();
+  }
+}
+function createRowHint(hint) {
+  const element = document.createElement("div");
+
+  element.classList.add("game__row-hint");
+
+  element.textContent = hint.join(" ");
+
+  return element;
+}
+
+function renderRowHints(hints) {
+  rowHints.innerHTML = "";
+
+  hints.forEach((hint) => {
+    const element = createRowHint(hint);
+
+    rowHints.appendChild(element);
+  });
+}
+
+function createColumnHint(hint) {
+  const element = document.createElement("div");
+
+  element.classList.add("game__column-hint");
+
+  hint.forEach((value) => {
+    const item = document.createElement("div");
+
+    item.textContent = value;
+
+    element.appendChild(item);
+  });
+
+  return element;
+}
+function renderColumnHints(hints) {
+  columnHints.innerHTML = "";
+
+  columnHints.style.gridTemplateColumns = `repeat(${hints.length}, var(--cell-size))`;
+
+  hints.forEach((hint) => {
+    const element = createColumnHint(hint);
+
+    columnHints.appendChild(element);
+  });
+}
+function checkSolution() {
+  const { bitmap: solution } = gameData;
+  const { bitmap: player } = gameState;
+
+  for (let row = 0; row < gameData.height; row++) {
+    for (let col = 0; col < gameData.width; col++) {
+      if (solution[row][col] !== player[row][col] % 2) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+function finishGame() {
+  gameStatus.textContent = "Гру завершено 🎉";
+  gameBoard.style.pointerEvents = "none";
+
+  gameStatus.classList.add("game__status--finished");
 }

@@ -2,7 +2,7 @@
   --cell-size: 32px;
 
   --hint-cell-width: var(--cell-size);
-  --hint-cell-height: var(--cell-size);
+  --hint-cell-height: calc(var(--cell-size) * 0.75);
 }
 
 * {
@@ -31,11 +31,12 @@ body {
   display: grid;
 
   grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
 
   grid-template-areas:
     "corner columnHints"
-    "rowHints board";
+    "rowHints board"
+    "status status";
 
   gap: 0;
 }
@@ -94,6 +95,69 @@ body {
   background-color: black;
 }
 
-.game__footer {
-  width: 100%;
+.game__row-hints {
+  display: grid;
+  grid-auto-rows: var(--cell-size);
+}
+
+.game__row-hint {
+  min-width: 80px;
+  height: var(--cell-size);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding-right: 8px;
+}
+.game__column-hints {
+  display: grid;
+  grid-area: columnHints;
+}
+
+.game__column-hint {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.game__column-hint > div {
+  width: var(--hint-cell-width);
+  height: var(--hint-cell-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game__status {
+  grid-area: status;
+
+  min-height: 32px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  overflow: hidden;
+}
+
+.game__status--finished {
+  animation: game-status-show 0.8s ease-out;
+}
+
+@keyframes game-status-show {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
