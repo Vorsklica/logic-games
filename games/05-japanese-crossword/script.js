@@ -1,26 +1,90 @@
 import { getDataFolder } from "../common/url.js";
-import { generateHints } from "./common/hints.js";
 
-const CELL_EMPTY = 0;
-const CELL_FILLED = 1;
-const CELL_CROSSED = 2;
+const dataFolder = getDataFolder();
 
-const gameData = {
-  title: "",
-  width: 0,
-  height: 0,
+const gameData = await loadGameData();
 
-  bitmap: [],
+let gameState;
 
-  rowHints: [],
-  columnHints: [],
-};
+const gameBoard = document.getElementById("gameBoard");
 
-const gameState = {
-  playerBitmap: [],
+gameBoard.addEventListener("click", onCellClick);
 
-  moves: 0,
-  startTime: null,
+function initializeGame(gameData) {
+  gameState = createGameState(gameData);
+  createGameBoard(gameData);
+  renderGameBoard(gameState);
+}
 
-  isCompleted: false,
-};
+initializeGame(gameData);
+
+async function loadGameData() {
+  const dataFolder = getDataFolder();
+
+  const module = await import(`./content/${dataFolder}/data.js`);
+
+  return module.default;
+}
+
+function createCell(row, col) {
+  const cell = document.createElement("div");
+
+  cell.classList.add("game__cell");
+
+  cell.dataset.row = row;
+  cell.dataset.col = col;
+
+  return cell;
+}
+function createGameBoard(gameData) {
+  const { width, height } = gameData;
+
+  gameBoard.innerHTML = "";
+  gameBoard.style.gridTemplateColumns = `repeat(${width}, var(--cell-size))`;
+
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      const cell = createCell(row, col);
+
+      gameBoard.appendChild(cell);
+    }
+  }
+}
+
+function renderGameBoard(gameState) {
+  const { bitmap } = gameState;
+
+  const cells = gameBoard.querySelectorAll(".game__cell");
+
+  cells.forEach((cell) => {
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.col);
+
+    cell.classList.toggle("game__cell--filled", bitmap[row][col] === 1);
+
+    cell.classList.toggle("game__cell--cross", bitmap[row][col] === 2);
+  });
+}
+
+function createGameState(gameData) {
+  const { width, height } = gameData;
+
+  return {
+    bitmap: Array.from({ length: height }, () => Array(width).fill(0)),
+  };
+}
+
+function onCellClick(event) {
+  const cell = event.target.closest(".game__cell");
+
+  if (!cell) {
+    return;
+  }
+
+  const row = Number(cell.dataset.row);
+  const col = Number(cell.dataset.col);
+
+  gameState.bitmap[row][col] = (gameState.bitmap[row][col] + 1) % 3;
+
+  renderGameBoard(gameState);
+}

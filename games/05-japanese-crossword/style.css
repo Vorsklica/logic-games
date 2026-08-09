@@ -54,6 +54,44 @@ body {
 
 .game__board {
   grid-area: board;
+
+  display: grid;
+}
+
+.game__cell {
+  position: relative;
+
+  width: var(--cell-size);
+  height: var(--cell-size);
+
+  border: 1px solid #999;
+  background-color: white;
+}
+
+.game__cell--cross::before,
+.game__cell--cross::after {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 80%;
+  height: 1px;
+
+  background-color: #999;
+}
+
+.game__cell--cross::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.game__cell--cross::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.game__cell--filled {
+  background-color: black;
 }
 
 .game__footer {
