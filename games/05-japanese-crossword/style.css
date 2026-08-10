@@ -29,6 +29,11 @@ body {
 
 .game__workspace {
   display: grid;
+  background-color: rgb(218, 215, 215);
+  padding-right: 25px;
+  padding-top: 15px;
+  border: black 1px solid;
+  border-radius: 10px;
 
   grid-template-columns: auto auto;
   grid-template-rows: auto auto auto;
@@ -136,7 +141,7 @@ body {
 .game__status {
   grid-area: status;
 
-  min-height: 32px;
+  min-height: 50px;
 
   display: flex;
   justify-content: flex-end;
