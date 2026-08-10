@@ -1,5 +1,5 @@
 :root {
-  --cell-size: 32px;
+  --cell-size: 24px;
 
   --hint-cell-width: var(--cell-size);
   --hint-cell-height: calc(var(--cell-size) * 0.75);
