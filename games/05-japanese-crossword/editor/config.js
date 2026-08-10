@@ -1,8 +1,8 @@
 export default {
-  width: 15,
-  height: 15,
+  width: 12,
+  height: 12,
 
-  cellSize: 24,
+  cellSize: 32,
 
   draftsFolder: "./drafts",
   defaultExtension: ".draft",

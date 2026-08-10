@@ -1,11 +1,11 @@
 {
   "publishAt": "2026-08-09T06:00:00+03:00",
-  "text": "Тест 1 Японський кросворд",
+  "text": "Тест 2 Японський кросворд",
   "game": {
     "id": "05-japanese-crossword",
-    "set": 4
+    "set": 5
   },
   "status": "published",
-  "messageId": 54,
-  "publishedAt": "2026-08-09T17:29:06.118Z"
+  "messageId": 55,
+  "publishedAt": "2026-08-10T05:21:08.154Z"
 }
