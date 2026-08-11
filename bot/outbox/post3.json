@@ -3,7 +3,9 @@
   "text": "Тест 3 12x12 2 rows hints",
   "game": {
     "id": "05-japanese-crossword",
-    "set": 7
+    "set": 8
   },
-  "status": "pending"
+  "status": "published",
+  "messageId": 59,
+  "publishedAt": "2026-08-10T11:45:31.465Z"
 }

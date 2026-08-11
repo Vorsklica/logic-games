@@ -1,6 +1,6 @@
 export default {
-  width: 10,
-  height: 15,
+  width: 8,
+  height: 10,
 
   cellSize: 24,
 

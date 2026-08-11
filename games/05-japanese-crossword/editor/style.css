@@ -1,5 +1,5 @@
 :root {
-  --editor-cell-size: 24px;
+  --editor-cell-size: 32px;
   --editor-hint-cell-size: var(--editor-cell-size);
 
   --editor-border-width: 1px;
@@ -22,6 +22,11 @@
   --editor-column-hints-height: calc(
     var(--editor-max-hints) * var(--editor-hint-cell-size)
   );
+}
+@media (max-width: 600px) {
+  :root {
+    --cell-size: 28px;
+  }
 }
 
 .editor {
