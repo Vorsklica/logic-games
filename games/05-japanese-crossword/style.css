@@ -74,6 +74,14 @@ body {
   background-color: white;
 }
 
+.game__cell--major-column {
+  border-right: 2px solid;
+}
+
+.game__cell--major-row {
+  border-bottom: 2px solid;
+}
+
 .game__cell--cross::before,
 .game__cell--cross::after {
   content: "";

@@ -38,6 +38,14 @@ function createCell(row, col) {
 
   cell.classList.add("game__cell");
 
+  if ((col + 1) % 5 === 0) {
+    cell.classList.add("game__cell--major-column");
+  }
+
+  if ((row + 1) % 5 === 0) {
+    cell.classList.add("game__cell--major-row");
+  }
+
   cell.dataset.row = row;
   cell.dataset.col = col;
 
