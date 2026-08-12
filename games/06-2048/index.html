@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>2048</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="game">
+      <header class="game__header">
+        <h1 class="game__title">2048</h1>
+
+        <div class="game__score">
+          <span class="game__score-label">Рахунок</span>
+          <span id="score" class="game__score-value">0</span>
+        </div>
+
+        <button id="newGame" class="game__new-game">Нова гра</button>
+      </header>
+
+      <section
+        id="gameBoard"
+        class="game__board"
+        aria-label="Ігрове поле 2048"
+      ></section>
+
+      <div id="gameMessage" class="game__message"></div>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

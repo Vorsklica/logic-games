@@ -1,0 +1,203 @@
+const gameState = {
+  board: [],
+  score: 0,
+  target: 2048,
+  targetReached: false,
+  gameOver: false,
+};
+
+const gameBoard = document.getElementById("gameBoard");
+const scoreElement = document.getElementById("score");
+const newGameButton = document.getElementById("newGame");
+const gameMessage = document.getElementById("gameMessage");
+
+newGameButton.addEventListener("click", newGame);
+document.addEventListener("keydown", handleKeyDown);
+newGame();
+
+function newGame() {
+  gameState.board = createEmptyBoard();
+  gameState.score = 0;
+  gameState.targetReached = false;
+  gameState.gameOver = false;
+
+  gameMessage.innerHTML = "";
+
+  addRandomTile();
+  addRandomTile();
+
+  render();
+  newGameButton.blur();
+}
+
+function addRandomTile() {
+  const emptyCells = [];
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (gameState.board[row][col] === 0) {
+        emptyCells.push({ row, col });
+      }
+    }
+  }
+
+  if (emptyCells.length === 0) {
+    return false;
+  }
+
+  const cell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+
+  const value = Math.random() < 0.9 ? 2 : 4;
+
+  gameState.board[cell.row][cell.col] = value;
+
+  return true;
+}
+
+function createEmptyBoard() {
+  return Array.from({ length: 4 }, () => Array(4).fill(0));
+}
+
+function render() {
+  gameBoard.innerHTML = "";
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      const value = gameState.board[row][col];
+
+      const cell = document.createElement("div");
+      cell.classList.add("game__cell");
+
+      if (value !== 0) {
+        cell.textContent = value;
+        cell.classList.add(`game__cell--${value}`);
+      }
+
+      gameBoard.appendChild(cell);
+    }
+  }
+
+  scoreElement.textContent = gameState.score;
+}
+
+function moveLine(line) {
+  // Прибираємо порожні клітинки
+  const tiles = line.filter((value) => value !== 0);
+
+  const result = [];
+  let scoreGained = 0;
+
+  for (let i = 0; i < tiles.length; i++) {
+    if (tiles[i] === tiles[i + 1]) {
+      const mergedValue = tiles[i] * 2;
+
+      result.push(mergedValue);
+      scoreGained += mergedValue;
+
+      i++;
+    } else {
+      result.push(tiles[i]);
+    }
+  }
+
+  // Доповнюємо рядок нулями
+  while (result.length < 4) {
+    result.push(0);
+  }
+
+  return {
+    line: result,
+    scoreGained,
+  };
+}
+
+function move(direction) {
+  let changed = false;
+  let scoreGained = 0;
+
+  if (direction === "left" || direction === "right") {
+    for (let row = 0; row < 4; row++) {
+      let line = [...gameState.board[row]];
+
+      if (direction === "right") {
+        line.reverse();
+      }
+
+      const result = moveLine(line);
+
+      if (direction === "right") {
+        result.line.reverse();
+      }
+
+      if (
+        JSON.stringify(gameState.board[row]) !== JSON.stringify(result.line)
+      ) {
+        changed = true;
+      }
+
+      gameState.board[row] = result.line;
+      scoreGained += result.scoreGained;
+    }
+  }
+
+  if (direction === "up" || direction === "down") {
+    for (let col = 0; col < 4; col++) {
+      let line = [];
+
+      for (let row = 0; row < 4; row++) {
+        line.push(gameState.board[row][col]);
+      }
+
+      if (direction === "down") {
+        line.reverse();
+      }
+
+      const result = moveLine(line);
+
+      if (direction === "down") {
+        result.line.reverse();
+      }
+
+      for (let row = 0; row < 4; row++) {
+        if (gameState.board[row][col] !== result.line[row]) {
+          changed = true;
+        }
+
+        gameState.board[row][col] = result.line[row];
+      }
+
+      scoreGained += result.scoreGained;
+    }
+  }
+
+  // Якщо хід нічого не змінив — нічого більше не робимо
+  if (!changed) {
+    return;
+  }
+
+  gameState.score += scoreGained;
+
+  // Після результативного ходу додаємо нову плитку
+  addRandomTile();
+
+  render();
+}
+function handleKeyDown(event) {
+  switch (event.key) {
+    case "ArrowLeft":
+      move("left");
+      break;
+
+    case "ArrowRight":
+      move("right");
+      break;
+
+    case "ArrowUp":
+      move("up");
+      break;
+
+    case "ArrowDown":
+      move("down");
+      break;
+  }
+}
