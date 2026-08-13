@@ -22,7 +22,6 @@ function newGame() {
   gameState.gameOver = false;
 
   gameMessage.innerHTML = "";
-
   addRandomTile();
   addRandomTile();
 
@@ -114,6 +113,9 @@ function moveLine(line) {
 function move(direction) {
   let changed = false;
   let scoreGained = 0;
+  if (gameState.gameOver) {
+    return;
+  }
 
   if (direction === "left" || direction === "right") {
     for (let row = 0; row < 4; row++) {
@@ -177,11 +179,23 @@ function move(direction) {
 
   gameState.score += scoreGained;
 
-  // Після результативного ходу додаємо нову плитку
   addRandomTile();
 
+  checkTarget();
+
+  if (!canMove()) {
+    gameState.gameOver = true;
+  }
+
   render();
+
+  if (gameState.gameOver) {
+    showGameOver();
+  } else if (gameState.targetReached) {
+    showTargetMessage();
+  }
 }
+і;
 function handleKeyDown(event) {
   switch (event.key) {
     case "ArrowLeft":
@@ -200,4 +214,71 @@ function handleKeyDown(event) {
       move("down");
       break;
   }
+}
+
+function canMove() {
+  // Є порожня клітинка
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (gameState.board[row][col] === 0) {
+        return true;
+      }
+    }
+  }
+
+  // Перевіряємо сусідні клітинки
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      const value = gameState.board[row][col];
+
+      // Праворуч
+      if (col < 3 && value === gameState.board[row][col + 1]) {
+        return true;
+      }
+
+      // Вниз
+      if (row < 3 && value === gameState.board[row + 1][col]) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function showGameOver() {
+  gameMessage.innerHTML = `
+        <div>Гру завершено!</div>
+        <div>Ваш рахунок: ${gameState.score}</div>
+    `;
+}
+
+function checkTarget() {
+  if (gameState.targetReached) {
+    return;
+  }
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (gameState.board[row][col] >= gameState.target) {
+        gameState.targetReached = true;
+        return;
+      }
+    }
+  }
+}
+
+function showTargetMessage() {
+  gameMessage.innerHTML = `
+        <div>🎉 Вітаємо! Ви досягли 2048!</div>
+        <button id="continueGame" class="game__continue">
+            Продовжити гру
+        </button>
+    `;
+
+  const continueButton = document.getElementById("continueGame");
+
+  continueButton.addEventListener("click", () => {
+    gameMessage.innerHTML = "";
+  });
 }
