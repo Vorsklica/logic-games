@@ -1,3 +1,5 @@
+import { initSwipe } from "../common/swipe.js";
+
 const gameState = {
   board: [],
   score: 0,
@@ -10,10 +12,6 @@ const gameBoard = document.getElementById("gameBoard");
 const scoreElement = document.getElementById("score");
 const newGameButton = document.getElementById("newGame");
 const gameMessage = document.getElementById("gameMessage");
-
-newGameButton.addEventListener("click", newGame);
-document.addEventListener("keydown", handleKeyDown);
-newGame();
 
 function newGame() {
   gameState.board = createEmptyBoard();
@@ -195,7 +193,7 @@ function move(direction) {
     showTargetMessage();
   }
 }
-і;
+
 function handleKeyDown(event) {
   switch (event.key) {
     case "ArrowLeft":
@@ -282,3 +280,11 @@ function showTargetMessage() {
     gameMessage.innerHTML = "";
   });
 }
+document.addEventListener("keydown", handleKeyDown);
+newGameButton.addEventListener("click", newGame);
+
+initSwipe(gameBoard, (direction) => {
+  move(direction);
+});
+
+newGame();
