@@ -102,6 +102,8 @@ body {
 
   border-radius: 6px;
   background: #bbada0;
+
+  touch-action: none;
 }
 
 .game__cell {
