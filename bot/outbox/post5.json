@@ -1,0 +1,11 @@
+{
+  "publishAt": "2026-08-15T06:00:00+03:00",
+  "text": "Знайдіть суму чисел",
+  "game": {
+    "id": "03-input",
+    "set": 3
+  },
+  "status": "published",
+  "messageId": 61,
+  "publishedAt": "2026-08-15T10:19:20.430Z"
+}
