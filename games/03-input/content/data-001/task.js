@@ -1,9 +1,11 @@
 export default {
-  question: `Яка найвища гора України?`,
+  title: "Задача дня",
 
-  image: "hoverla.jpg",
+  image: "fr001.jpg",
 
-  answers: ["говерла"],
+  question: "Знайдіть суму чисел",
 
-  explanation: `Говерла — найвища вершина України. Її висота становить 2061 метр.`,
+  answers: ["15"],
+
+  type: "number",
 };

@@ -1,13 +1,13 @@
 import config from "./config.js";
-//import { getSet } from "../common/url.js";
 import { getDataFolder } from "../common/url.js";
 
 // --------------------------------------------------
 // Змінні
 // --------------------------------------------------
 
-let info;
 let task;
+
+const folder = getDataFolder();
 
 // --------------------------------------------------
 // Елементи сторінки
@@ -28,28 +28,13 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   try {
-    await loadData();
-
+    task = (await import(`./content/${folder}/task.js`)).default;
     renderTask();
-
     registerEvents();
   } catch (error) {
     console.error(error);
-
     message.textContent = "Не вдалося завантажити задачу.";
   }
-}
-
-// --------------------------------------------------
-// Завантаження даних
-// --------------------------------------------------
-
-async function loadData() {
-  const folder = getDataFolder();
-
-  info = (await import(`./content/${folder}/info.js`)).default;
-
-  task = (await import(`./content/${folder}/task.js`)).default;
 }
 
 // --------------------------------------------------
@@ -57,13 +42,14 @@ async function loadData() {
 // --------------------------------------------------
 
 function renderTask() {
-  gameTitle.textContent = info.title;
+  gameTitle.textContent = task.title;
 
   question.textContent = task.question;
 
-  taskImage.src = `./content/${info.id}/${task.image}`;
+  //taskImage.src = `./content/${task.imagePath}/${task.image}`;
+  taskImage.src = `./content/${folder}/${task.image}`;
 
-  taskImage.alt = info.title;
+  taskImage.alt = task.title;
 
   answerInput.type = task.type;
 
