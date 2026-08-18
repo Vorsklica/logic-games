@@ -1,6 +1,6 @@
 export default {
   title: "Геометрична головоломка",
-  image: "mm.png",
+  image: "mm.jpg",
   question: `Знайдіть невідому відстань`,
   answers: [20],
   type: "number",
