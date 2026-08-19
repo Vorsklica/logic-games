@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Знайди відмінності</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game">
+      <h1 class="game__title">Знайди відмінності</h1>
+
+      <div class="game__info">
+        <div class="game__progress" id="gameProgress">Знайдено: 0 / 0</div>
+
+        <div class="game__timer" id="gameTimer">⏱ 00:00</div>
+      </div>
+
+      <div class="game__images">
+        <div class="game__image-container">
+          <img id="originalImage" src="" alt="Оригінальне зображення" />
+        </div>
+
+        <div class="game__image-container">
+          <img id="modifiedImage" src="" alt="Змінене зображення" />
+        </div>
+      </div>
+
+      <div class="game__status" id="gameStatus"></div>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
