@@ -1,0 +1,12 @@
+{
+  "publishAt": "2026-08-19T06:00:00+03:00",
+  "image": "07-find-differences.png",
+  "text": "Тест гри 07-find-differences на виведення зображення на екран телефону",
+  "game": {
+    "id": "07-find-differences",
+    "set": 1
+  },
+  "status": "published",
+  "messageId": 70,
+  "publishedAt": "2026-08-19T05:32:31.609Z"
+}
