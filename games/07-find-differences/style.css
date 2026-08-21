@@ -26,7 +26,22 @@ body {
   padding: var(--game-padding);
 
   display: grid;
-  grid-template-rows: 20% 35% 35% 10%;
+  grid-template-rows: 7% 41% 1% 41% 10%;
+}
+.game__header {
+  grid-row: 1;
+}
+
+.game__image-container:first-child {
+  grid-row: 2;
+}
+
+.game__image-container:last-child {
+  grid-row: 4;
+}
+
+.game__status {
+  grid-row: 5;
 }
 
 .game__title {

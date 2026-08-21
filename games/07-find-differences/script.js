@@ -577,7 +577,7 @@ function showWrongClick(image, x, y) {
   setTimeout(() => {
     canvas.remove();
     gameState.clickLocked = false;
-  }, 1000);
+  }, 500);
 }
 
 function startTimer() {
