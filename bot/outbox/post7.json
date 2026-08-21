@@ -1,12 +1,12 @@
 {
   "publishAt": "2026-08-19T06:00:00+03:00",
   "image": "07-find-differences.png",
-  "text": "Знайдіть відмінності на малюнках.",
+  "text": "Малюнки на перший погляд обсолютно одинакові, але відмінності всеж є. Знайдіть їх!",
   "game": {
     "id": "07-find-differences",
-    "set": 2
+    "set": 3
   },
   "status": "published",
-  "messageId": 71,
-  "publishedAt": "2026-08-21T06:05:19.945Z"
+  "messageId": 72,
+  "publishedAt": "2026-08-21T06:26:19.594Z"
 }

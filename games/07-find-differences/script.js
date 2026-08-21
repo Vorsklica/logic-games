@@ -484,6 +484,12 @@ function getOverlayCanvas(image) {
     image.parentElement.appendChild(canvas);
   }
 
+  canvas.style.left = `${image.offsetLeft}px`;
+
+  canvas.style.top = `${image.offsetTop}px`;
+  canvas.style.width = `${image.offsetWidth}px`;
+  canvas.style.height = `${image.offsetHeight}px`;
+
   return canvas;
 }
 
@@ -543,6 +549,10 @@ function showWrongClick(image, x, y) {
 
   canvas.width = image.naturalWidth;
   canvas.height = image.naturalHeight;
+  canvas.style.left = `${image.offsetLeft}px`;
+  canvas.style.top = `${image.offsetTop}px`;
+  canvas.style.width = `${image.offsetWidth}px`;
+  canvas.style.height = `${image.offsetHeight}px`;
   canvas.className = "game__wrong-click";
   /*  
   canvas.style.position = "absolute";
