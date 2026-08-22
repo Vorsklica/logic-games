@@ -451,7 +451,7 @@ async function handleImageClick(event) {
       showRegionOnBothImages(regionIndex);
       updateProgress();
       if (gameState.foundRegions.length === gameState.regions.length) {
-        await playSound("success.wav");
+        await playSound("success-win.wav");
         showGameFinished();
       } else {
         playSound("success.wav");
@@ -531,7 +531,7 @@ function updateProgress() {
 function showGameFinished() {
   gameState.gameOver = true;
   stopTimer();
-  playSound("win.wav");
+  //playSound("win.wav");
 
   gameStatus.innerHTML = `
   🎉 Вітаємо! Усі відмінності знайдено!
