@@ -450,6 +450,7 @@ function handleImageClick(event) {
       console.log("Found region:", regionIndex);
       showRegionOnBothImages(regionIndex);
       updateProgress();
+      playSound("success.wav");
 
       if (gameState.foundRegions.length === gameState.regions.length) {
         showGameFinished();
@@ -529,6 +530,7 @@ function updateProgress() {
 function showGameFinished() {
   gameState.gameOver = true;
   stopTimer();
+  playSound("win.wav");
 
   gameStatus.innerHTML = `
   🎉 Вітаємо! Усі відмінності знайдено!
@@ -542,6 +544,7 @@ function showGameFinished() {
 
 function showWrongClick(image, x, y) {
   gameState.clickLocked = true;
+  playSound("fail.wav");
 
   const container = image.parentElement;
 
@@ -612,5 +615,13 @@ function restartGame() {
 
   updateProgress();
   startTimer();
+}
+
+function playSound(filename) {
+  const audio = new Audio(`./sounds/${filename}`);
+
+  audio.play().catch((error) => {
+    console.warn("Не вдалося відтворити звук:", error);
+  });
 }
 initGame();
