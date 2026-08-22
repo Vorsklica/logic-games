@@ -456,10 +456,6 @@ async function handleImageClick(event) {
       } else {
         playSound("success.wav");
       }
-
-      if (gameState.foundRegions.length === gameState.regions.length) {
-        showGameFinished();
-      }
     }
   } else {
     showWrongClick(image, x, y);
@@ -638,7 +634,7 @@ function playSound(filename) {
     );
 
     audio.play().catch((error) => {
-      console.warn(`Не вдалося відтворити  звук: ${filename}`, error);
+      console.warn(`Не вдалося відтворити звук: ${filename}`, error);
       resolve();
     });
   });
