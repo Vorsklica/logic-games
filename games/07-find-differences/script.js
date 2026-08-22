@@ -638,7 +638,7 @@ function playSound(filename) {
     );
 
     audio.play().catch((error) => {
-      console.warn(`Не вдалося відтворити звук: ${filename}`, error);
+      console.warn(`Не вдалося відтворити  звук: ${filename}`, error);
       resolve();
     });
   });
