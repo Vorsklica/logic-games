@@ -432,7 +432,7 @@ function findRegionAt(x, y) {
   return -1;
 }
 
-function handleImageClick(event) {
+async function handleImageClick(event) {
   if (gameState.gameOver || gameState.clickLocked) return;
 
   const image = event.currentTarget;
@@ -450,7 +450,12 @@ function handleImageClick(event) {
       console.log("Found region:", regionIndex);
       showRegionOnBothImages(regionIndex);
       updateProgress();
-      playSound("success.wav");
+      if (gameState.foundRegions.length === gameState.regions.length) {
+        await playSound("success.wav");
+        showGameFinished();
+      } else {
+        playSound("success.wav");
+      }
 
       if (gameState.foundRegions.length === gameState.regions.length) {
         showGameFinished();
@@ -618,10 +623,24 @@ function restartGame() {
 }
 
 function playSound(filename) {
-  const audio = new Audio(`./sounds/${filename}`);
+  return new Promise((resolve) => {
+    const audio = new Audio(`./sounds/${filename}`);
 
-  audio.play().catch((error) => {
-    console.warn("Не вдалося відтворити звук:", error);
+    audio.addEventListener("ended", resolve, { once: true });
+
+    audio.addEventListener(
+      "error",
+      () => {
+        console.warn(`Не вдалося відтворити звук: ${filename}`);
+        resolve();
+      },
+      { once: true },
+    );
+
+    audio.play().catch((error) => {
+      console.warn(`Не вдалося відтворити звук: ${filename}`, error);
+      resolve();
+    });
   });
 }
 initGame();
