@@ -1,11 +1,13 @@
 {
   "publishAt": "2026-08-09T06:00:00+03:00",
-  "text": "Тест 3 12x12 2 rows hints",
+  "image": "postimage-05.jpg",
+  "title": "ЯПОНСЬКИЙ КРОСВОРД 10х10",
+  "text": "Кожне число вказує на кількість клітинок в блоці рядка чи стовпця. Використовуючи логічне мислення та підказки відтворіть зображення",
   "game": {
     "id": "05-japanese-crossword",
-    "set": 8
+    "set": 9
   },
-  "status": "published",
+  "status": "pending",
   "messageId": 59,
   "publishedAt": "2026-08-10T11:45:31.465Z"
 }
