@@ -48,6 +48,8 @@ export async function publishPost(post) {
   const url = buildGameUrl(post);
   const options = buildKeyboard(url);
 
+  const text = buildPostText(post.data);
+
   let message;
 
   if (post.data.image) {
@@ -60,11 +62,30 @@ export async function publishPost(post) {
     }
 
     message = await bot.sendPhoto(CHAT_ID, fs.createReadStream(imagePath), {
-      caption: post.data.text,
+      caption: text,
       ...options,
     });
   } else {
-    message = await bot.sendMessage(CHAT_ID, post.data.text, options);
+    message = await bot.sendMessage(CHAT_ID, text, options);
   }
+
   return message.message_id;
+}
+
+function buildPostText(data) {
+  const parts = [];
+
+  if (data.separator) {
+    parts.push(`━━━━━━ ${data.separator} ━━━━━━`);
+  }
+
+  if (data.title) {
+    parts.push(data.title);
+  }
+
+  if (data.text) {
+    parts.push(data.text);
+  }
+
+  return parts.join("\n\n");
 }
