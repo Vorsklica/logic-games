@@ -1,14 +1,17 @@
 import { getDataFolder } from "../common/url.js";
 import { generateHints } from "./common/hints.js";
+import {
+  saveGameState,
+  loadGameState,
+  hasGameState,
+  clearGameState,
+} from "../common/gameStorage.js";
 
-const dataFolder = getDataFolder();
-
-const gameData = await loadGameData();
-
+let GAME_ID = "05-japanese-crossword";
 let gameState;
-
+//const dataFolder = getDataFolder();
+const gameData = await loadGameData();
 const gameBoard = document.getElementById("gameBoard");
-
 gameBoard.addEventListener("click", onCellClick);
 
 function initializeGame(gameData) {
@@ -23,11 +26,9 @@ function initializeGame(gameData) {
   renderColumnHints(hints.cols);
 }
 
-initializeGame(gameData);
-
 async function loadGameData() {
   const dataFolder = getDataFolder();
-
+  GAME_ID += dataFolder;
   const module = await import(`./content/${dataFolder}/data.js`);
 
   return module.default;
@@ -82,11 +83,17 @@ function renderGameBoard(gameState) {
 }
 
 function createGameState(gameData) {
+  const savedState = loadGameState(GAME_ID);
   const { width, height } = gameData;
-
-  return {
+  let result = {
     bitmap: Array.from({ length: height }, () => Array(width).fill(0)),
   };
+  if (savedState) {
+    if (confirm("Продовжити збережену гру?")) {
+      result = savedState;
+    }
+  }
+  return result;
 }
 
 function onCellClick(event) {
@@ -102,8 +109,12 @@ function onCellClick(event) {
   gameState.bitmap[row][col] = (gameState.bitmap[row][col] + 1) % 3;
 
   renderGameBoard(gameState);
+
+  saveGameState(GAME_ID, gameState);
+
   if (checkSolution()) {
     finishGame();
+    clearGameState(GAME_ID);
   }
 }
 function createRowHint(hint) {
@@ -172,3 +183,7 @@ function finishGame() {
 
   gameStatus.classList.add("game__status--finished");
 }
+
+const savedState = loadGameState(GAME_ID);
+
+initializeGame(gameData);
