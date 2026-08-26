@@ -1,6 +1,12 @@
 import { initSwipe } from "../common/swipe.js";
+import {
+  saveGameState,
+  loadGameState,
+  hasGameState,
+  clearGameState,
+} from "../common/gameStorage.js";
 
-const gameState = {
+let gameState = {
   board: [],
   score: 0,
   target: 2048,
@@ -8,12 +14,14 @@ const gameState = {
   gameOver: false,
 };
 
+const GAME_ID = "2048";
 const gameBoard = document.getElementById("gameBoard");
 const scoreElement = document.getElementById("score");
 const newGameButton = document.getElementById("newGame");
 const gameMessage = document.getElementById("gameMessage");
 
 function newGame() {
+  clearGameState(GAME_ID);
   gameState.board = createEmptyBoard();
   gameState.score = 0;
   gameState.targetReached = false;
@@ -183,6 +191,9 @@ function move(direction) {
 
   if (!canMove()) {
     gameState.gameOver = true;
+    clearGameState(GAME_ID);
+  } else {
+    saveGameState(GAME_ID, gameState);
   }
 
   render();
@@ -287,4 +298,12 @@ initSwipe(gameBoard, (direction) => {
   move(direction);
 });
 
-newGame();
+const savedState = loadGameState(GAME_ID);
+
+if (savedState) {
+  gameState = savedState;
+} else {
+  newGame();
+}
+
+render();
