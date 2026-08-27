@@ -15,7 +15,14 @@ const gameBoard = document.getElementById("gameBoard");
 gameBoard.addEventListener("click", onCellClick);
 
 function initializeGame(gameData) {
-  gameState = createGameState(gameData);
+  const savedState = loadGameState(GAME_ID);
+
+  if (savedState && confirm("Продовжити збережену гру?")) {
+    gameState = savedState;
+  } else {
+    gameState = createGameState(gameData);
+    clearGameState();
+  }
 
   createGameBoard(gameData);
   renderGameBoard(gameState);
@@ -83,17 +90,11 @@ function renderGameBoard(gameState) {
 }
 
 function createGameState(gameData) {
-  const savedState = loadGameState(GAME_ID);
   const { width, height } = gameData;
-  let result = {
+
+  return {
     bitmap: Array.from({ length: height }, () => Array(width).fill(0)),
   };
-  if (savedState) {
-    if (confirm("Продовжити збережену гру?")) {
-      result = savedState;
-    }
-  }
-  return result;
 }
 
 function onCellClick(event) {
@@ -182,8 +183,7 @@ function finishGame() {
   gameBoard.style.pointerEvents = "none";
 
   gameStatus.classList.add("game__status--finished");
+  clearGameState();
 }
-
-const savedState = loadGameState(GAME_ID);
 
 initializeGame(gameData);
