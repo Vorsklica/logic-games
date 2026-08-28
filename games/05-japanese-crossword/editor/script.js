@@ -34,12 +34,13 @@ const editorRowHints = document.getElementById("editor_rowHints");
 const editorColumnHints = document.getElementById("editor_columnHints");
 const editorMessageText = document.getElementById("editor_messageText");
 const editorMessage = document.getElementById("editor_message");
+const editorDocumentTitle = document.getElementById("editor_documentTitle");
 const editorCloseMessageButton = document.getElementById(
   "editor_closeMessageButton",
 );
 
 const documentState = {
-  title: config.editorTitle,
+  title: "",
   documentName: config.defaultDocumentName,
   width: config.width,
   height: config.height,
@@ -62,12 +63,17 @@ editorButtonOpen.addEventListener("click", onButtonOpenClick);
 editorButtonValidate.addEventListener("click", onButtonValidate);
 editorCloseMessageButton.addEventListener("click", hideMessage);
 editorButtonExport.addEventListener("click", exportDocument);
+editorDocumentTitle.addEventListener("input", () => {
+  documentState.title = editorDocumentTitle.value;
+  setModified();
+});
 
 initialize();
 
 function initialize() {
   editorTitle.textContent = `${documentState.title}`;
   editorDocumentSize.textContent = `${documentState.width} × ${documentState.height}`;
+  editorDocumentTitle.value = documentState.title;
   createBitmap();
 
   createBoard();
@@ -191,21 +197,28 @@ function onButtonNewClick(event) {
 }
 
 function newDocument() {
+  documentState.title = "";
+
   documentState.height = config.height;
   documentState.width = config.width;
+
   createBitmap();
   createBoard();
   renderBoard();
   updateHints();
+
   solutionCount = 0;
 
   documentState.documentName = config.defaultDocumentName;
   documentState.fileHandle = null;
   documentState.isModified = false;
 
+  editorDocumentTitle.value = documentState.title;
+
   updateEditorInfo();
   updateExportButton();
 }
+
 /**
  * ========================================================
  *     Збереження документу
@@ -260,9 +273,9 @@ async function saveDocumentAsFirst() {
 
 function createDocumentData() {
   return {
+    title: documentState.title,
     width: documentState.width,
     height: documentState.height,
-
     bitmap: documentState.bitmap,
   };
 }
@@ -343,6 +356,7 @@ async function readDocument(fileHandle) {
 }
 
 function loadDocumentData(documentData, fileHandle) {
+  documentState.title = documentData.title;
   documentState.width = documentData.width;
   documentState.height = documentData.height;
 
@@ -351,6 +365,8 @@ function loadDocumentData(documentData, fileHandle) {
   documentState.documentName = fileHandle.name;
   documentState.fileHandle = fileHandle;
   documentState.isModified = false;
+
+  editorDocumentTitle.value = documentState.title;
 }
 /*=========================================================*/
 
@@ -534,6 +550,8 @@ function createDataFileContent() {
     meta: {
         sourceFile: "${documentState.documentName}"
     },
+
+    title: "${documentState.title}",
 
     width: ${documentState.width},
     height: ${documentState.height},

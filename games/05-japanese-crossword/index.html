@@ -11,7 +11,7 @@
   <body>
     <main class="game">
       <header class="game__header">
-        <h1 id="gameTitle">Японський кросворд</h1>
+        <h1 id="gameTitle"></h1>
       </header>
 
       <section class="game__workspace">
@@ -26,6 +26,18 @@
         <div id="gameStatus" class="game__status"></div>
       </section>
     </main>
+
+    <div id="restoreModal" hidden class="game__modal">
+      <div class="game__modal-content">
+        <h2>Знайдено збережену гру</h2>
+        <p>Продовжити попередню гру?</p>
+
+        <div class="game__modal-buttons">
+          <button id="restoreGameButton">Продовжити</button>
+          <button id="newGameButton">Нова гра</button>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="script.js"></script>
   </body>

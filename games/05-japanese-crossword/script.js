@@ -11,17 +11,25 @@ let GAME_ID = "05-japanese-crossword";
 let gameState;
 //const dataFolder = getDataFolder();
 const gameData = await loadGameData();
+const gameTitle = document.getElementById("gameTitle");
 const gameBoard = document.getElementById("gameBoard");
 gameBoard.addEventListener("click", onCellClick);
 
-function initializeGame(gameData) {
+async function initializeGame(gameData) {
+  gameTitle.textContent = gameData.title;
   const savedState = loadGameState(GAME_ID);
 
-  if (savedState && confirm("Продовжити збережену гру?")) {
-    gameState = savedState;
+  if (savedState) {
+    const restore = await askToRestoreGame();
+
+    if (restore) {
+      gameState = savedState;
+    } else {
+      gameState = createGameState(gameData);
+      clearGameState(GAME_ID);
+    }
   } else {
     gameState = createGameState(gameData);
-    clearGameState();
   }
 
   createGameBoard(gameData);
@@ -183,7 +191,26 @@ function finishGame() {
   gameBoard.style.pointerEvents = "none";
 
   gameStatus.classList.add("game__status--finished");
-  clearGameState();
+  clearGameState(GAME_ID);
+}
+function askToRestoreGame() {
+  const modal = document.getElementById("restoreModal");
+  const restoreButton = document.getElementById("restoreGameButton");
+  const newGameButton = document.getElementById("newGameButton");
+
+  return new Promise((resolve) => {
+    modal.hidden = false;
+
+    restoreButton.onclick = () => {
+      modal.hidden = true;
+      resolve(true);
+    };
+
+    newGameButton.onclick = () => {
+      modal.hidden = true;
+      resolve(false);
+    };
+  });
 }
 
 initializeGame(gameData);

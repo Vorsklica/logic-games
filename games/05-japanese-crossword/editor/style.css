@@ -36,6 +36,10 @@
   font-size: var(--editor-font-size);
 }
 
+.editor__document {
+  margin-bottom: 10px;
+}
+
 .editor__toolbar,
 .editor__actions {
   margin: 20px 0;
