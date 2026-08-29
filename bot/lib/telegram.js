@@ -63,10 +63,14 @@ export async function publishPost(post) {
 
     message = await bot.sendPhoto(CHAT_ID, fs.createReadStream(imagePath), {
       caption: text,
+      parse_mode: "HTML",
       ...options,
     });
   } else {
-    message = await bot.sendMessage(CHAT_ID, text, options);
+    message = await bot.sendMessage(CHAT_ID, text, {
+      parse_mode: "HTML",
+      ...options,
+    });
   }
 
   return message.message_id;
@@ -76,16 +80,25 @@ function buildPostText(data) {
   const parts = [];
 
   if (data.separator) {
-    parts.push(`━━━━━━ ${data.separator} ━━━━━━`);
+    parts.push(`━━━━━━ ${escapeHtml(data.separator)} ━━━━━━`);
   }
 
   if (data.title) {
-    parts.push(data.title);
+    parts.push(
+      `<blockquote>${escapeHtml(data.title.toUpperCase())}</blockquote>`,
+    );
   }
 
   if (data.text) {
-    parts.push(data.text);
+    parts.push(escapeHtml(data.text));
   }
 
   return parts.join("\n\n");
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
