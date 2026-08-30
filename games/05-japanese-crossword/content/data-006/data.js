@@ -4,7 +4,7 @@ export default {
         sourceFile: "Гроза.draft"
     },
 
-    title: "",
+    title: "Гроза",
 
     width: 10,
     height: 12,
