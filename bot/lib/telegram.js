@@ -19,7 +19,6 @@ function buildGameUrl(post) {
   if (set !== undefined) {
     url += `?set=${set}`;
   }
-  console.log(url);
   return url;
 }
 
@@ -45,8 +44,12 @@ function buildKeyboard(url) {
  * Публікує пост у Telegram.
  */
 export async function publishPost(post) {
-  const url = buildGameUrl(post);
-  const options = buildKeyboard(url);
+  let options = {};
+
+  if (post.data.game) {
+    const url = buildGameUrl(post);
+    options = buildKeyboard(url);
+  }
 
   const text = buildPostText(post.data);
 
@@ -64,6 +67,7 @@ export async function publishPost(post) {
     message = await bot.sendPhoto(CHAT_ID, fs.createReadStream(imagePath), {
       caption: text,
       parse_mode: "HTML",
+      has_spoiler: !!post.data.imageSpoiler,
       ...options,
     });
   } else {
@@ -90,7 +94,9 @@ function buildPostText(data) {
   }
 
   if (data.text) {
-    parts.push(escapeHtml(data.text));
+    const text = escapeHtml(data.text);
+
+    parts.push(data.textSpoiler ? `<tg-spoiler>${text}</tg-spoiler>` : text);
   }
 
   return parts.join("\n\n");
