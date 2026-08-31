@@ -23,9 +23,9 @@ function buildGameUrl(post) {
 }
 
 /**
- * Формує кнопку "🎮 Грати".
+ * Формує кнопки "🎮 Грати" та "💬 Залишити відгук".
  */
-function buildKeyboard(url) {
+function buildKeyboard(url, feedbackUrl) {
   return {
     reply_markup: {
       inline_keyboard: [
@@ -33,6 +33,12 @@ function buildKeyboard(url) {
           {
             text: "🎮 Грати",
             url,
+          },
+        ],
+        [
+          {
+            text: "💬 Залишити відгук",
+            url: feedbackUrl,
           },
         ],
       ],
@@ -48,7 +54,8 @@ export async function publishPost(post) {
 
   if (post.data.game) {
     const url = buildGameUrl(post);
-    options = buildKeyboard(url);
+    const feedbackUrl = `https://t.me/GraimontBot?start=feedback_${post.data.game.id}`;
+    options = buildKeyboard(url, feedbackUrl);
   }
 
   const text = buildPostText(post.data);
