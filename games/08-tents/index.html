@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Намети і дерева</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="game">
+      <!-- Заголовок -->
+      <header class="game__header">
+        <h1 id="gameTitle">Намети і дерева</h1>
+      </header>
+
+      <!-- Секундомір -->
+      <div class="game__timer" id="gameTimer">00:00</div>
+
+      <!-- Панель інструментів -->
+      <div class="game__toolbar" id="gameToolbar">
+        <!-- Поки порожня -->
+      </div>
+
+      <!-- Ігрове поле -->
+      <section class="game__board-wrapper">
+        <div class="game__board" id="gameBoard">
+          <!--
+            Верхній лівий кут — порожня клітинка.
+            Далі — числа стовпців.
+            Нижче — числа рядків та ігрові клітинки.
+          -->
+        </div>
+      </section>
+
+      <!-- Кнопка перезапуску -->
+      <button class="game__restart" id="restartButton" type="button">
+        Почати спочатку
+      </button>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

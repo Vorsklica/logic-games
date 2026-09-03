@@ -5,8 +5,95 @@ import TelegramBot from "node-telegram-bot-api";
 
 const env = dotenv.config();
 
-const bot = new TelegramBot(process.env.BOT_TOKEN);
+const bot = new TelegramBot(process.env.BOT_TOKEN, {
+  polling: true,
+});
+
 const CHAT_ID = process.env.CHAT_ID;
+
+const feedbackSessions = new Map();
+
+const FEEDBACK_CHAT_ID = process.env.FEEDBACK_CHAT_ID;
+
+// Обробник /start
+bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
+  const parameter = match[1];
+
+  console.log("START:", parameter);
+
+  if (!parameter?.startsWith("feedback_")) {
+    return;
+  }
+
+  const parts = parameter.split("_");
+
+  const gameId = parts[1];
+  const set = parts[2];
+
+  console.log("FEEDBACK SESSION:", {
+    chatId: msg.chat.id,
+    gameId,
+    set,
+  });
+
+  feedbackSessions.set(msg.chat.id, {
+    gameId,
+    set,
+  });
+
+  await bot.sendMessage(
+    msg.chat.id,
+    `📝 Відгук про гру ${gameId}${
+      set !== undefined ? ` (сет ${set})` : ""
+    }\n\nНапишіть свій відгук або повідомте про помилку.`,
+  );
+});
+
+// Обробник повідомлень
+bot.on("message", async (msg) => {
+  console.log("MESSAGE:", msg.text);
+  // Нас цікавлять тільки звичайні текстові повідомлення.
+  if (!msg.text || msg.text.startsWith("/")) {
+    return;
+  }
+
+  // Перевіряємо, чи очікуємо від цього користувача відгук.
+  const session = feedbackSessions.get(msg.chat.id);
+
+  if (!session) {
+    return;
+  }
+
+  const { gameId, set } = session;
+
+  const username = msg.from.username
+    ? `@${msg.from.username}`
+    : msg.from.first_name || "Невідомий користувач";
+
+  const gameInfo = set !== undefined ? `${gameId} (сет ${set})` : gameId;
+
+  const feedbackText = [
+    "💬 Новий відгук",
+    "",
+    `Гра: ${gameInfo}`,
+    `Користувач: ${username}`,
+    "",
+    msg.text,
+  ].join("\n");
+
+  // Показуємо відгук у консолі.
+  console.log("FEEDBACK:");
+  console.log(feedbackText);
+
+  // Надсилаємо відгук власнику бота.
+  await bot.sendMessage(FEEDBACK_CHAT_ID, feedbackText);
+
+  // Завершуємо сесію відгуку.
+  feedbackSessions.delete(msg.chat.id);
+
+  // Відповідаємо користувачу.
+  await bot.sendMessage(msg.chat.id, "✅ Дякуємо за ваш відгук!");
+});
 
 /**
  * Формує URL гри.
@@ -54,7 +141,13 @@ export async function publishPost(post) {
 
   if (post.data.game) {
     const url = buildGameUrl(post);
-    const feedbackUrl = `https://t.me/GraimontBot?start=feedback_${post.data.game.id}`;
+    const { id, set } = post.data.game;
+
+    const feedbackParameter =
+      set !== undefined ? `feedback_${id}_${set}` : `feedback_${id}`;
+
+    const feedbackUrl = `https://t.me/GraimontBot?start=${feedbackParameter}`;
+
     options = buildKeyboard(url, feedbackUrl);
   }
 

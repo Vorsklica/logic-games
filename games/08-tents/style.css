@@ -1,0 +1,183 @@
+:root {
+  --game-max-width: 900px;
+  --game-padding: 16px;
+
+  --cell-size: 42px;
+  --border-width: 1px;
+
+  --text-color: #222;
+  --board-border-color: #555;
+  --cell-border-color: #aaa;
+  --hint-background: #f2f2f2;
+  --game-background: #fff;
+
+  --button-padding: 10px 20px;
+  --button-font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  background: var(--game-background);
+}
+
+.game {
+  width: min(100%, var(--game-max-width));
+  margin: 0 auto;
+  padding: var(--game-padding);
+}
+
+/* Заголовок */
+
+.game__header {
+  text-align: center;
+}
+
+.game__header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+/* Секундомір */
+
+.game__timer {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Панель інструментів */
+
+.game__toolbar {
+  min-height: 42px;
+  margin-top: 12px;
+}
+
+/* Контейнер поля */
+
+.game__board-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+/*
+ * Саме поле.
+ *
+ * Перша колонка — числа рядків.
+ * Перший рядок — числа стовпців.
+ */
+.game__board {
+  display: grid;
+
+  /*
+   * Перша колонка для чисел рядків.
+   * Решта колонок — ігрові клітинки.
+   *
+   * Кількість колонок буде задавати JavaScript.
+   */
+  grid-auto-rows: var(--cell-size);
+
+  border-top: var(--border-width) solid var(--board-border-color);
+  border-left: var(--border-width) solid var(--board-border-color);
+}
+
+/* Загальна клітинка */
+
+.game__cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-right: var(--border-width) solid var(--cell-border-color);
+  border-bottom: var(--border-width) solid var(--cell-border-color);
+
+  user-select: none;
+}
+
+/* Клітинки з числами */
+
+.game__hint {
+  background: var(--hint-background);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Ліва колонка */
+
+.game__row-hint {
+  width: var(--cell-size);
+}
+
+/* Верхній рядок */
+
+.game__column-hint {
+  height: var(--cell-size);
+}
+
+/* Ігрова клітинка */
+
+.game__play-cell {
+  cursor: pointer;
+}
+
+/* Кнопка */
+
+.game__restart {
+  display: block;
+
+  margin: 20px auto 0;
+  padding: var(--button-padding);
+
+  border: 1px solid #888;
+  border-radius: 6px;
+
+  background: #f2f2f2;
+
+  font-size: var(--button-font-size);
+  cursor: pointer;
+}
+
+.game__restart:hover {
+  background: #e6e6e6;
+}
+
+.game__restart:active {
+  background: #dcdcdc;
+}
+
+/* Телефон */
+
+@media (max-width: 600px) {
+  :root {
+    --cell-size: 36px;
+  }
+
+  .game {
+    padding: 10px;
+  }
+
+  .game__header h1 {
+    font-size: 22px;
+  }
+
+  .game__timer {
+    font-size: 18px;
+  }
+}
