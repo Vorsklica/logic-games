@@ -9,6 +9,7 @@
   --board-border-color: #555;
   --cell-border-color: #aaa;
   --hint-background: #f2f2f2;
+  --cell-background: #fff;
   --game-background: #fff;
 
   --button-padding: 10px 20px;
@@ -72,27 +73,26 @@ body {
   justify-content: center;
   margin-top: 8px;
   overflow-x: auto;
+  touch-action: pan-x;
 }
 
 /*
  * Саме поле.
  *
- * Перша колонка — числа рядків.
- * Перший рядок — числа стовпців.
+ * Тимчасовий декоративний фон.
+ * Пізніше замінимо його на background.png.
  */
 .game__board {
   display: grid;
 
-  /*
-   * Перша колонка для чисел рядків.
-   * Решта колонок — ігрові клітинки.
-   *
-   * Кількість колонок буде задавати JavaScript.
-   */
   grid-auto-rows: var(--cell-size);
 
   border-top: var(--border-width) solid var(--board-border-color);
   border-left: var(--border-width) solid var(--board-border-color);
+
+  background-image: url("./images/field-background.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 /* Загальна клітинка */
@@ -109,6 +109,8 @@ body {
   border-bottom: var(--border-width) solid var(--cell-border-color);
 
   user-select: none;
+
+  background: var(--cell-background);
 }
 
 /* Клітинки з числами */
@@ -135,6 +137,25 @@ body {
 
 .game__play-cell {
   cursor: pointer;
+}
+
+/*
+ * Відкрита клітинка.
+ *
+ * Біла заливка зникає, і стає видимим
+ * фон самого game__board.
+ */
+.game__play-cell.revealed {
+  background: transparent;
+}
+
+/* Дерево */
+
+.game__tree {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  cursor: default;
 }
 
 /* Кнопка */

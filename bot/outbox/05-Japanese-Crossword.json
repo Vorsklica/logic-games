@@ -3,6 +3,8 @@
   "image": "postimage-05.jpg",
   "title": "Генно модифікований дракон",
   "text": "Числа над стовпцями та біля рядків вказують на кількість чорних клітинок у блоках. Між блоками є як мінімум одна біла клітинка.",
+  "imageSpoiler": false,
+  "textSpoiler": false,
   "game": {
     "id": "05-japanese-crossword",
     "set": 9
