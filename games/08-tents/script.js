@@ -165,12 +165,18 @@ function getTentCount() {
 }
 
 function checkGame() {
+  console.log("Клік");
   if (getTentCount() !== requiredTentCount) return false;
+  console.log("Перший пройшов");
   if (!checkTentCount()) return false;
+  console.log("Другий пройшов");
   if (!checkRows()) return false;
   if (!checkColumns()) return false;
+  console.log("Третій пройшов");
   if (!checkTrees()) return false;
+  console.log("4-й пройшов");
   if (!checkTentNeighbors()) return false;
+  console.log("6-й пройшов");
 
   return true;
 }
@@ -226,11 +232,16 @@ function checkColumns() {
 }
 
 function checkTrees() {
-  for (const [treeRow, treeCol] of data.trees) {
+  // Для кожного намету запам'ятовуємо дерево,
+  // якому він уже призначений.
+  const tentOwners = new Map();
+
+  // Рекурсивно намагаємося знайти намет для дерева.
+  function assignTree(treeIndex, usedTents) {
+    const [treeRow, treeCol] = data.trees[treeIndex];
+
     const row = treeRow - 1;
     const col = treeCol - 1;
-
-    let tentCount = 0;
 
     const neighbors = [
       [row - 1, col],
@@ -239,19 +250,53 @@ function checkTrees() {
       [row, col + 1],
     ];
 
-    for (const [neighborRow, neighborCol] of neighbors) {
+    for (const [tentRow, tentCol] of neighbors) {
       if (
-        neighborRow >= 0 &&
-        neighborRow < gameState.size &&
-        neighborCol >= 0 &&
-        neighborCol < gameState.size &&
-        gameState.cells[neighborRow][neighborCol] === CELL_STATE.TENT
+        tentRow < 0 ||
+        tentRow >= gameState.size ||
+        tentCol < 0 ||
+        tentCol >= gameState.size
       ) {
-        tentCount++;
+        continue;
+      }
+
+      if (gameState.cells[tentRow][tentCol] !== CELL_STATE.TENT) {
+        continue;
+      }
+
+      const tentKey = `${tentRow},${tentCol}`;
+
+      // Цей намет уже пробували в цій гілці.
+      if (usedTents.has(tentKey)) {
+        continue;
+      }
+
+      usedTents.add(tentKey);
+
+      const owner = tentOwners.get(tentKey);
+
+      // Намет вільний — призначаємо його цьому дереву.
+      if (owner === undefined) {
+        tentOwners.set(tentKey, treeIndex);
+        return true;
+      }
+
+      // Намет уже належить іншому дереву.
+      // Спробуємо знайти тому дереву інший намет.
+      if (assignTree(owner, usedTents)) {
+        tentOwners.set(tentKey, treeIndex);
+        return true;
       }
     }
 
-    if (tentCount !== 1) {
+    return false;
+  }
+
+  // Послідовно призначаємо намет кожному дереву.
+  for (let treeIndex = 0; treeIndex < data.trees.length; treeIndex++) {
+    const usedTents = new Set();
+
+    if (!assignTree(treeIndex, usedTents)) {
       return false;
     }
   }
