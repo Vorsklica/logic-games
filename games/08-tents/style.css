@@ -79,8 +79,6 @@ body {
 /*
  * Саме поле.
  *
- * Тимчасовий декоративний фон.
- * Пізніше замінимо його на background.png.
  */
 .game__board {
   display: grid;
@@ -156,6 +154,12 @@ body {
   height: 90%;
   object-fit: contain;
   cursor: default;
+}
+
+.game__tent {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
 }
 
 /* Кнопка */
