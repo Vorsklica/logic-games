@@ -1,23 +1,44 @@
-import data from "./content/data-001/data.js";
+import { getDataFolder } from "../common/url.js";
 import { showMessage } from "../common/message.js";
+import { showConfirm } from "../common/confirm.js";
+import {
+  saveGameState,
+  loadGameState,
+  clearGameState,
+} from "../common/gameStorage.js";
+import { createTimer } from "../common/timer.js";
+
+let GAME_ID = "08-tents";
+
+const data = await loadGameData();
 
 const requiredTentCount = data.rows.reduce((sum, count) => sum + count, 0); //Кількість палаток
-
 const CELL_STATE = {
   UNKNOWN: "unknown",
   TREE: "tree",
   TENT: "tent",
   MARKED: "marked",
 };
+const timer = createTimer("gameTimer");
 
-const gameState = {
+let gameState = {
   size: data.size,
   cells: [],
   gameOver: false,
+  elapsedTime: 0,
 };
+
+async function loadGameData() {
+  const dataFolder = getDataFolder();
+  GAME_ID += dataFolder;
+  const module = await import(`./content/${dataFolder}/data.js`);
+  return module.default;
+}
 
 function createGameState() {
   gameState.gameOver = false;
+  gameState.elapsedTime = 0;
+
   gameState.cells = Array.from({ length: gameState.size }, () =>
     Array(gameState.size).fill(CELL_STATE.UNKNOWN),
   );
@@ -145,7 +166,11 @@ function onCellClick(event) {
 
   renderCell(cell, row, col);
 
+  gameState.elapsedTime = timer.getElapsed();
+  saveGameState(GAME_ID, gameState);
+
   if (checkGame()) {
+    clearGameState(GAME_ID);
     finishGame();
   }
 }
@@ -165,18 +190,12 @@ function getTentCount() {
 }
 
 function checkGame() {
-  console.log("Клік");
   if (getTentCount() !== requiredTentCount) return false;
-  console.log("Перший пройшов");
   if (!checkTentCount()) return false;
-  console.log("Другий пройшов");
   if (!checkRows()) return false;
   if (!checkColumns()) return false;
-  console.log("Третій пройшов");
   if (!checkTrees()) return false;
-  console.log("4-й пройшов");
   if (!checkTentNeighbors()) return false;
-  console.log("6-й пройшов");
 
   return true;
 }
@@ -338,6 +357,7 @@ function checkTentNeighbors() {
 }
 
 function finishGame() {
+  timer.stop();
   gameState.gameOver = true;
 
   showMessage({
@@ -347,17 +367,42 @@ function finishGame() {
   });
 }
 
-function onRestartButtonClick() {
+async function onRestartButtonClick() {
+  const confirmed = await showConfirm({
+    title: "Почати спочатку?",
+    text: "Поточний прогрес буде втрачено.",
+    confirmText: "Почати",
+    cancelText: "Скасувати",
+  });
+
+  if (!confirmed) {
+    return;
+  }
+  clearGameState(GAME_ID);
   createGameState();
   createGameBoard();
+  timer.reset();
+  timer.start();
 }
 
 function init() {
   document.getElementById("gameTitle").textContent = data.title;
 
-  createGameState();
+  const savedState = loadGameState(GAME_ID);
+
+  if (savedState) {
+    gameState = savedState;
+
+    timer.setElapsed(gameState.elapsedTime);
+  } else {
+    createGameState();
+
+    timer.reset();
+  }
 
   createGameBoard();
+
+  timer.start();
 
   const restartButton = document.getElementById("restartButton");
 
