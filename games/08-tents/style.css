@@ -191,7 +191,7 @@ body {
 
 @media (max-width: 600px) {
   :root {
-    --cell-size: min(36px, 8vw);
+    --cell-size: min(36px, 7vw);
   }
 
   .game {
