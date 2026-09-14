@@ -76,3 +76,6 @@ export function markError(post, error) {
   delete post.data.messageId;
   delete post.data.publishedAt;
 }
+export function startBot() {
+  bot.startPolling();
+}

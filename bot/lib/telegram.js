@@ -5,9 +5,7 @@ import TelegramBot from "node-telegram-bot-api";
 
 const env = dotenv.config();
 
-const bot = new TelegramBot(process.env.BOT_TOKEN, {
-  polling: true,
-});
+const bot = new TelegramBot(process.env.BOT_TOKEN);
 
 const CHAT_ID = process.env.CHAT_ID;
 
@@ -112,23 +110,24 @@ function buildGameUrl(post) {
 /**
  * Формує кнопки "🎮 Грати" та "💬 Залишити відгук".
  */
-function buildKeyboard(url, feedbackUrl) {
+function buildKeyboard(gameUrl, feedbackUrl) {
+  const buttons = [
+    {
+      text: "🎮 Грати",
+      url: gameUrl,
+    },
+  ];
+
+  if (feedbackUrl) {
+    buttons.push({
+      text: "💬 Залишити відгук",
+      url: feedbackUrl,
+    });
+  }
+
   return {
     reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: "🎮 Грати",
-            url,
-          },
-        ],
-        [
-          {
-            text: "💬 Залишити відгук",
-            url: feedbackUrl,
-          },
-        ],
-      ],
+      inline_keyboard: [buttons],
     },
   };
 }
@@ -141,12 +140,16 @@ export async function publishPost(post) {
 
   if (post.data.game) {
     const url = buildGameUrl(post);
-    const { id, set } = post.data.game;
+    let feedbackUrl;
 
-    const feedbackParameter =
-      set !== undefined ? `feedback_${id}_${set}` : `feedback_${id}`;
+    if (post.data.feedback) {
+      const { id, set } = post.data.game;
 
-    const feedbackUrl = `https://t.me/GraimontBot?start=${feedbackParameter}`;
+      const feedbackParameter =
+        set !== undefined ? `feedback_${id}_${set}` : `feedback_${id}`;
+
+      feedbackUrl = `https://t.me/GraimontBot?start=${feedbackParameter}`;
+    }
 
     options = buildKeyboard(url, feedbackUrl);
   }
