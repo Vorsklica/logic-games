@@ -148,7 +148,7 @@ export async function publishPost(post) {
       const feedbackParameter =
         set !== undefined ? `feedback_${id}_${set}` : `feedback_${id}`;
 
-      feedbackUrl = `https://t.me/GraimontBot?start=${feedbackParameter}`;
+      feedbackUrl = `https://t.me/${process.env.BOT_USER_NAME}?start=${feedbackParameter}`;
     }
 
     options = buildKeyboard(url, feedbackUrl);
