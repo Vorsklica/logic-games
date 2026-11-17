@@ -1244,4 +1244,4 @@ function hasUniqueSolution(puzzle) {
 // Запуск генератора
 // --------------------------------------------------
 
-generatePuzzle(12);
+generatePuzzle(8);
