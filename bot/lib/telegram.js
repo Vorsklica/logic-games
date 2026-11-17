@@ -108,26 +108,19 @@ function buildGameUrl(post) {
 }
 
 /**
- * Формує кнопки "🎮 Грати" та "💬 Залишити відгук".
+ * Формує кнопку "🎮 Грати".
  */
-function buildKeyboard(gameUrl, feedbackUrl) {
-  const buttons = [
-    {
-      text: "🎮 Грати",
-      url: gameUrl,
-    },
-  ];
-
-  if (feedbackUrl) {
-    buttons.push({
-      text: "💬 Залишити відгук",
-      url: feedbackUrl,
-    });
-  }
-
+function buildKeyboard(gameUrl) {
   return {
     reply_markup: {
-      inline_keyboard: [buttons],
+      inline_keyboard: [
+        [
+          {
+            text: "🎮 Грати",
+            url: gameUrl,
+          },
+        ],
+      ],
     },
   };
 }
@@ -140,18 +133,7 @@ export async function publishPost(post) {
 
   if (post.data.game) {
     const url = buildGameUrl(post);
-    let feedbackUrl;
-
-    if (post.data.feedback) {
-      const { id, set } = post.data.game;
-
-      const feedbackParameter =
-        set !== undefined ? `feedback_${id}_${set}` : `feedback_${id}`;
-
-      feedbackUrl = `https://t.me/${process.env.BOT_USER_NAME}?start=${feedbackParameter}`;
-    }
-
-    options = buildKeyboard(url, feedbackUrl);
+    options = buildKeyboard(url);
   }
 
   const text = buildPostText(post.data);
