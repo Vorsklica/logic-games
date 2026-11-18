@@ -129,14 +129,8 @@ function buildKeyboard(gameUrl) {
  * Публікує пост у Telegram.
  */
 export async function publishPost(post) {
-  let options = {};
-
-  if (post.data.game) {
-    const url = buildGameUrl(post);
-    options = buildKeyboard(url);
-  }
-
-  const text = buildPostText(post.data);
+  const gameUrl = post.data.game ? buildGameUrl(post) : null;
+  const text = buildPostText(post.data, gameUrl);
 
   let message;
 
@@ -153,19 +147,17 @@ export async function publishPost(post) {
       caption: text,
       parse_mode: "HTML",
       has_spoiler: !!post.data.imageSpoiler,
-      ...options,
     });
   } else {
     message = await bot.sendMessage(CHAT_ID, text, {
       parse_mode: "HTML",
-      ...options,
     });
   }
 
   return message.message_id;
 }
 
-function buildPostText(data) {
+function buildPostText(data, gameUrl) {
   const parts = [];
 
   if (data.separator) {
@@ -182,6 +174,10 @@ function buildPostText(data) {
     const text = escapeHtml(data.text);
 
     parts.push(data.textSpoiler ? `<tg-spoiler>${text}</tg-spoiler>` : text);
+  }
+
+  if (gameUrl) {
+    parts.push(`<a href="${escapeHtml(gameUrl)}">🎮 Грати</a>`);
   }
 
   return parts.join("\n\n");
