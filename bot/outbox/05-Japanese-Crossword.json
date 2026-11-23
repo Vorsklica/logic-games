@@ -1,15 +1,13 @@
 {
   "publishAt": "2026-09-12T06:00:00+03:00",
-  "image": "postimage-05.jpg",
-  "title": "Генно модифікований дракон",
+  "image": "postimage-05-japanese-crossword.jpg",
+  "title": "Химера",
   "text": "Числа над стовпцями та біля рядків вказують на кількість чорних клітинок у блоках. Між блоками є як мінімум одна біла клітинка.",
   "imageSpoiler": false,
   "textSpoiler": false,
   "game": {
     "id": "05-japanese-crossword",
-    "set": 9
+    "set": 10
   },
-  "status": "published",
-  "messageId": 134,
-  "publishedAt": "2026-09-13T08:35:08.521Z"
+  "status": "pending"
 }
