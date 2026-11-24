@@ -1,0 +1,13 @@
+{
+  "publishAt": "2026-09-12T06:00:00+03:00",
+  "image": "postimage/image_name.jpg",
+  "title": "HEADER",
+  "text": "Text of post",
+  "imageSpoiler": false,
+  "textSpoiler": false,
+  "game": {
+    "id": "0N-game_name",
+    "set": 10
+  },
+  "status": "pending"
+}
