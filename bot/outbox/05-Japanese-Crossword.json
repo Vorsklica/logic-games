@@ -9,5 +9,7 @@
     "id": "05-japanese-crossword",
     "set": 10
   },
-  "status": "pending"
+  "status": "published",
+  "messageId": 45,
+  "publishedAt": "2026-11-24T15:09:06.953Z"
 }
